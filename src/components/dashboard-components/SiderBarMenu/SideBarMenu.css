@@ -1,0 +1,10 @@
+ul{
+    display: flex;
+    flex-direction: column;
+    gap: 12px 0px;
+}
+li a{
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
