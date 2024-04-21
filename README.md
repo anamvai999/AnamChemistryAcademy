@@ -3,7 +3,9 @@
 1. npm install
 2. npm install @reduxjs/toolkit
 3. npm i -D daisyui@latest
-4. npm install react-icons --save
+4. npm i react-icons
+
+
 ## packges 
 1. reduxjs/toolkit
 2. react-redux
