@@ -5,7 +5,7 @@ import React from "react";
 const page = () => {
   return (
     <div className="">
-      <div className="flex  gap-4 mt-4 justify-between text-center ">
+      <div className="flex text-gray-600  gap-4 mt-4 justify-between text-center ">
         <ShadowCard className={"w-full"}>
           Enrolled <br /> 20
         </ShadowCard>
