@@ -59,7 +59,7 @@ const Page = () => {
       },
     });
   };
-  
+
   return (
     <div>
       <div className="mt-4 flex justify-end">
