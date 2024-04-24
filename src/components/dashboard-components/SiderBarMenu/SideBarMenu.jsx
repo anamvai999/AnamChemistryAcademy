@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { BiBarChart, BiDetail, BiVideo } from "react-icons/bi";
+import { BiBarChart, BiDetail, BiFolder, BiVideo } from "react-icons/bi";
 import "./SideBarMenu.css";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -14,6 +14,12 @@ const SideBarMenu = () => {
       link: "/dashboard",
       linkText: "Dashboard",
       linkIcon: <BiBarChart />,
+     
+    },
+    {
+      link: "/dashboard/manage-category",
+      linkText: "Manage Category",
+      linkIcon: <BiFolder />,
      
     },
     {
