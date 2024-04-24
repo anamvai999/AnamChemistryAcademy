@@ -4,6 +4,7 @@ import Modal from "react-modal";
 import React, { useState } from "react";
 import { BiBookAdd, BiBorderRadius } from "react-icons/bi";
 import { PlusOutlined } from "@ant-design/icons";
+import CategoryTable from "@/components/dashboard-components/CategoryTable/CategoryTable";
 
 const Page = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -14,7 +15,10 @@ const Page = () => {
   const [previewImage, setPreviewImage] = useState("");
   const [fileList, setFileList] = useState([]);
 
-  console.log(fileList);
+
+
+  
+
 
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
@@ -209,6 +213,8 @@ const Page = () => {
         </Modal>
 
       </div>
+
+      <CategoryTable />
     </div>
   );
 };
