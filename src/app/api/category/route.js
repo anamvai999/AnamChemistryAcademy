@@ -16,7 +16,9 @@ export async function POST(req) {
 
 export async function GET() {
   try {
-    return NextResponse.json({ success: true });
+    await connectMongodb();
+    const data = await categoryModel.find();
+    return NextResponse.json({ success: true, data});
   } catch (error) {
     return NextResponse.json({ error: error.message });
   }
