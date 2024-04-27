@@ -1,11 +1,19 @@
-import React from 'react'
+import React from "react";
 
-const CategoryTable = () => {
-  return (
-    <div>
-      Category TAble
-    </div>
-  )
+export async function getServerSideProps() {
+  const res = await fetch("/api/category");
+  const categories = await res.json();
+
+  return {
+    props: {
+      categories,
+    },
+  };
 }
 
-export default CategoryTable
+const CategoryTable = ({categories}) => {
+  console.log(categories);
+  return <div></div>;
+};
+
+export default CategoryTable;
