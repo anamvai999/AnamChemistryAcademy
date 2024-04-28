@@ -1,7 +1,7 @@
 "use client";
 import { Button, Image, Input, Upload } from "antd";
 import Modal from "react-modal";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BiBookAdd, BiBorderRadius } from "react-icons/bi";
 import { PlusOutlined } from "@ant-design/icons";
 import CategoryTable from "@/components/dashboard-components/CategoryTable/CategoryTable";
@@ -15,6 +15,15 @@ const Page = () => {
   const [previewImage, setPreviewImage] = useState("");
   const [fileList, setFileList] = useState([]);
 
+  const [categories, setCategories] = useState();
+
+  useEffect(() => {
+    fetch("/api/category")
+      .then((res) => res.json())
+      .then((data) => {
+        setCategories(data.data);
+      });
+  }, []);
 
 
   
@@ -107,6 +116,7 @@ const Page = () => {
           .then((res) => res.json())
           .then((data) => {
             console.log(data);
+            setCategories((prev) => [...prev, data.message]);
             closeModal();
           });
       }
@@ -138,8 +148,9 @@ const Page = () => {
     },
   };
 
+  
   return (
-    <div>
+    <div style={{scrollbarWidth: "none"}} className="h-[87vh] overflow-scroll">
       <div className="flex justify-end ">
         <Button
           onClick={openModal}
@@ -214,7 +225,7 @@ const Page = () => {
 
       </div>
 
-      <CategoryTable />
+      <CategoryTable setCategories={setCategories} categories={categories} />
     </div>
   );
 };
