@@ -132,6 +132,7 @@ const Video = () => {
             <Container maxWidth="md" justify="center">
                 <div className="player__wrapper" onMouseMove={mouseMoveHandler}>
                     <ReactPlayer
+                        
                         ref={videoPlayerRef}
                         className="player"
                         url={"https://www.youtube.com/embed/NZzFOXGANMg?si=Vp2ro5AA31gsMoY6"}
@@ -143,6 +144,7 @@ const Video = () => {
                         onProgress={progressHandler}
                         onBuffer={bufferStartHandler}
                         onBufferEnd={bufferEndHandler}
+                        
                     />
 
                     {buffer && <p>Loading</p>}
