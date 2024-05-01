@@ -1,6 +1,5 @@
 import NavBar from "@/components/frontDesign/NavBar/NavBar";
 import Category from "@/components/frontDesign/category/Category";
-import Image from "next/image";
 
 export default function Home() {
   return (
