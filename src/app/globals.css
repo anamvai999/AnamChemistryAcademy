@@ -8,3 +8,14 @@
   padding: 0;
   box-sizing: border-box;
 }
+.video-container .ytp-share-button-visible {
+  display: none !important;
+}
+.ytp-youtube-button .ytp-button .yt-uix-sessionlink{
+  display: none !important;
+  background-color: brown !important;
+  height: 1px;
+}
+.ytp-share-icon{
+  display: none !important;
+}
