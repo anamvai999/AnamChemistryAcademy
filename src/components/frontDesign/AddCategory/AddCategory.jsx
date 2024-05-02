@@ -2,11 +2,11 @@
 import { Button, Image, Input, Upload } from "antd";
 import Modal from "react-modal";
 import React, { useEffect, useState } from "react";
-import { BiBookAdd, BiBorderRadius } from "react-icons/bi";
+import { BiPlus } from "react-icons/bi";
 import { PlusOutlined } from "@ant-design/icons";
-import CategoryTable from "@/components/dashboard-components/CategoryTable/CategoryTable";
+import { toast } from "react-toastify";
 
-const Page = () => {
+const AddCategory = ({ refetch }) => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [categoryData, setCategoryData] = useState({ thumbnail: "" });
 
@@ -14,20 +14,6 @@ const Page = () => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [fileList, setFileList] = useState([]);
-
-  const [categories, setCategories] = useState();
-
-  useEffect(() => {
-    fetch("/api/category")
-      .then((res) => res.json())
-      .then((data) => {
-        setCategories(data.data);
-      });
-  }, []);
-
-
-  
-
 
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
@@ -94,17 +80,7 @@ const Page = () => {
         const data = await response.json();
         const imageUrl = data.data.url;
 
-        console.log(imageUrl);
-
-        //  setCategoryData((prevData) => ({
-        //   ...prevData,
-        //   thumbnail: imageUrl,
-        // }));
-
-
         categoryData.thumbnail = imageUrl;
-
-        console.log(categoryData);
 
         await fetch("/api/category", {
           method: "POST",
@@ -115,12 +91,13 @@ const Page = () => {
         })
           .then((res) => res.json())
           .then((data) => {
-            console.log(data);
-            setCategories((prev) => [...prev, data.message]);
+            refetch();
             closeModal();
+            toast.success("Cateogory created");
           });
       }
     } catch (error) {
+      toast.error("Something went wrong!");
       console.log("Error uploading image: ", error);
     }
   };
@@ -137,6 +114,7 @@ const Page = () => {
   // Custon Styles for Modal
   const customStyles = {
     content: {
+      backgroundColor: "black",
       top: "50%",
       left: "50%",
       right: "auto",
@@ -144,21 +122,21 @@ const Page = () => {
       bottom: "auto",
       marginRight: "-50%",
       transform: "translate(-50%, -50%)",
-      color: "black",
+      color: "white",
     },
   };
 
-  
   return (
-    <div style={{scrollbarWidth: "none"}} className="h-[87vh] overflow-scroll">
-      <div className="flex justify-end ">
-        <Button
+    <div>
+      <div className="flex justify-center ">
+        <button
+          title="Create Category"
           onClick={openModal}
           size="large"
-          className="flex items-center gap-2 bg-blue-400 text-white mt-4"
+          className="flex items-center gap-2 mt-4 border border-white text-xl rounded-full p-2"
         >
-          <BiBookAdd /> Create Category
-        </Button>
+          <BiPlus />
+        </button>
 
         <Modal
           isOpen={modalIsOpen}
@@ -173,6 +151,7 @@ const Page = () => {
               fileList={fileList}
               onPreview={handlePreview}
               onChange={handleChange}
+              className="text-white"
             >
               {fileList.length == 1 ? null : uploadButton}
             </Upload>
@@ -195,6 +174,7 @@ const Page = () => {
             {/* Preivew Thumbnail  End */}
 
             <Input
+              className=""
               onChange={handleInputChange}
               name="title"
               placeholder="Enter category title"
@@ -208,24 +188,21 @@ const Page = () => {
           <div className="flex gap-2 justify-end mt-4">
             <Button
               size="large"
-              className="bg-red-600 text-white"
+              className="bg-red-600 text-white border-none"
               onClick={closeModal}
             >
               Close
             </Button>
             <Button
               size="large"
-              className="bg-blue-400 text-white"
+              className="bg-green-400 text-white border-none"
               onClick={handleSubmit}
             >
               Create
             </Button>
           </div>
         </Modal>
-
       </div>
-
-      <CategoryTable setCategories={setCategories} categories={categories} />
     </div>
   );
 };
@@ -238,4 +215,4 @@ const getBase64 = (file) =>
     reader.onerror = (error) => reject(error);
   });
 
-export default Page;
+export default AddCategory;
