@@ -6,9 +6,11 @@ import { BiPlus } from "react-icons/bi";
 import { PlusOutlined } from "@ant-design/icons";
 import { toast } from "react-toastify";
 
-const AddCategory = ({ refetch }) => {
+const AddChapter = ({ refetch , categorySlug}) => {
+ 
+
   const [modalIsOpen, setIsOpen] = useState(false);
-  const [categoryData, setCategoryData] = useState({ thumbnail: "" });
+  const [chapterData, setChapterData] = useState({ thumbnail: "" });
 
   // image upload
   const [previewOpen, setPreviewOpen] = useState(false);
@@ -52,7 +54,7 @@ const AddCategory = ({ refetch }) => {
     const name = e.target.name;
     const value = e.target.value;
 
-    setCategoryData((prev) => ({
+    setChapterData((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -60,7 +62,7 @@ const AddCategory = ({ refetch }) => {
 
   // Submitting all Data
   const handleSubmit = async () => {
-    console.log(categoryData);
+    console.log(chapterData);
 
     try {
       const imgData = new FormData();
@@ -80,19 +82,22 @@ const AddCategory = ({ refetch }) => {
         const data = await response.json();
         const imageUrl = data.data.url;
 
-        categoryData.thumbnail = imageUrl;
+        chapterData.thumbnail = imageUrl;
 
-        await fetch("/api/category", {
+        console.log(categorySlug);
+
+        await fetch(`/api/chapters?categorySlug=${categorySlug}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(categoryData),
+          body: JSON.stringify(chapterData),
         })
           .then((res) => res.json())
           .then((data) => {
             refetch();
             closeModal();
+
             if (data.success) {
               toast.success(data.message);
             } else {
@@ -147,7 +152,7 @@ const AddCategory = ({ refetch }) => {
           onRequestClose={closeModal}
           style={customStyles}
         >
-          <h2 className="text-xl  mb-4">Create Category</h2>
+          <h2 className="text-xl  mb-4">Create Chapters</h2>
           <form className="space-y-4">
             {/* Upload Thumbnail */}
             <Upload
@@ -181,12 +186,12 @@ const AddCategory = ({ refetch }) => {
               className=""
               onChange={handleInputChange}
               name="title"
-              placeholder="Enter category title"
+              placeholder="Enter chapter title"
             />
             <Input
               onChange={handleInputChange}
               name="slug"
-              placeholder="Enter category slug"
+              placeholder="Enter chapter slug"
             />
           </form>
           <div className="flex gap-2 justify-end mt-4">
@@ -219,4 +224,4 @@ const getBase64 = (file) =>
     reader.onerror = (error) => reject(error);
   });
 
-export default AddCategory;
+export default AddChapter;

@@ -1,5 +1,4 @@
-import  mongoose, {Schema} from 'mongoose';
-
+import mongoose, { Schema } from "mongoose";
 
 const categorySchema = new Schema({
   title: {
@@ -14,6 +13,9 @@ const categorySchema = new Schema({
     type: String,
     required: true,
   },
+  chapters: {
+    type: Array
+  }
 });
 
 const categoryModel =
