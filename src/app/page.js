@@ -16,7 +16,7 @@ export default function Home() {
   } = useSWR("/api/category", fetcher);
 
   const isAdmin = true;
-
+ 
   return (
     <main className="flex min-h-screen flex-col items-center  ">
       <ToastContainer />
@@ -53,4 +53,5 @@ const fetcher = async (url) => {
   }
   const data = await res.json();
   return data.data;
+  
 };
