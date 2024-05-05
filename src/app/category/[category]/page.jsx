@@ -27,7 +27,6 @@ export default function Page() {
   return (
     <main className="flex min-h-screen flex-col items-center  ">
       <ToastContainer />
-      <NavBar />
       <div className="flex justify-end">
         {isAdmin && <AddChapter categorySlug={categorySlug} refetch={mutate} />}
       </div>
