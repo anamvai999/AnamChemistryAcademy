@@ -1,27 +1,68 @@
-import React from 'react'
+"use client";
 
-const page = () => {
-    return (
-        <div className='flex flex-col  gap-3 justify-center items-center pt-5'>
-            <div className="card sm:card-side  w-72 sm:w-[90vw] bg-base-100 shadow-xl">
-                <figure className='sm:w-[20vw] '><img className='rounded' src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" /></figure>
-                <div className="card-body ">
-                    <div className='flex justify-between'>
-                        <p>class -1</p>
-                        <p className='text-end'>10 Oct 2023</p>
-                    </div>
-                    <h2 className="card-title">
-                        মোলের সূত্র সংক্রান্ত গাণিতিক সমস্যাবলী - 2
-                    </h2>
-                    <div className="flex gap-1 ">
-                        <div className="badge badge-outline text-xs">weapon-series</div>
-                        <div className="badge badge-outline text-xs">পরিমাণগত রসায়ন</div>
-                    </div>
-                </div>
-            </div>
-            
+import useSWR from "swr";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { usePathname } from "next/navigation";
+import ClassCard from "@/components/frontDesign/ClassCard/ClassCard";
+import AddClass from "@/components/frontDesign/AddClass/AddClass";
+
+export default function Page() {
+  const pathName = usePathname();
+
+  const categorySlug = pathName.split("/")[2];
+
+  const {
+    data: chapters,
+    error,
+    isLoading,
+    mutate,
+  } = useSWR(`/api/chapters?slug=${categorySlug}`, fetcher);
+
+  console.log(chapters);
+
+  const isAdmin = true;
+
+  return (
+    <main className="flex min-h-screen flex-col items-center  ">
+      <ToastContainer />
+      <div className="flex justify-end">
+        {isAdmin && <AddClass categorySlug={categorySlug} refetch={mutate} />}
+      </div>
+      {error && (
+        <div className="flex justify-center items-center">
+          <p className="text-red-500">Failed to fetch the data</p>
         </div>
-    )
+      )}
+      {isLoading && (
+        <div className="h-full absolute top-1/2">
+          <p className="animate-pulse text-white text-xl">Loading....</p>
+        </div>
+      )}
+
+      {!isLoading && (
+        <div className="">
+          {chapters?.map((chapter) => (
+            <ClassCard key={chapter.slug}  />
+          ))}
+        </div>
+      )}
+      {chapters?.length === 0 && (
+        <div className="h-full absolute top-1/2">
+          <p className="text-xl text-zinc-400">No Chapters</p>
+        </div>
+      )}
+    </main>
+  );
 }
 
-export default page
+const fetcher = async (url) => {
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error("Failed to fetch the data");
+  }
+  const data = await res.json();
+  console.log(data);
+
+  return data.data;
+};

@@ -1,8 +1,14 @@
 import Image from "next/image"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
 
 const Page = ({chapter}) => {
+
+  const url = usePathname();
+  console.log(url);
+
   return (
-    <div>
+    <Link href={`${url}/${chapter.slug}`}>
       <div className="flex items-center justify-center flex-wrap gap-3 p-5">
         <div class="card card-compact w-72 bg-base-100 shadow-xl">
           <figure>
@@ -19,7 +25,7 @@ const Page = ({chapter}) => {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   )
 }
 

@@ -20,7 +20,6 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center  ">
       <ToastContainer />
-      <NavBar />
       <div className="flex justify-end">
         {isAdmin && <AddCategory refetch={mutate} />}
       </div>
