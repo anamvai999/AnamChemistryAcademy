@@ -1,26 +1,70 @@
-import Image from "next/image"
+"use client";
 
-const page = () => {
+import NavBar from "@/components/frontDesign/NavBar/NavBar";
+import Chapters from "@/components/frontDesign/Chapters/Chapters";
+import useSWR from "swr";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import AddChapter from "@/components/frontDesign/AddChapter/AddChapter";
+import { usePathname } from "next/navigation";
+
+export default function Page() {
+  const pathName = usePathname();
+
+  const categorySlug = pathName.split("/")[2];
+
+  const {
+    data: chapters,
+    error,
+    isLoading,
+    mutate,
+  } = useSWR(`/api/chapters?slug=${categorySlug}`, fetcher);
+
+  console.log(chapters);
+
+  const isAdmin = true;
+
   return (
-    <div>
-      <div className="flex items-center justify-center flex-wrap gap-3 p-5">
-        <div class="card card-compact w-72 bg-base-100 shadow-xl">
-          <figure>
-            <Image
-              src="https://anamhasan.web.app/static/media/p1-c1.92f262763484cb0ffefa.png"
-              alt="Title"
-              width={500}
-              height={500}
-              class="transition-transform duration-300 transform hover:scale-105" />
-          </figure>
-          <div class="card-actions justify-around p-3">
-            <h2 class="card-title">Chapter - 1</h2>
-            <p>Paper - 1</p>
-          </div>
-        </div>
+    <main className="flex min-h-screen flex-col items-center  ">
+      <ToastContainer />
+      <NavBar />
+      <div className="flex justify-end">
+        {isAdmin && <AddChapter categorySlug={categorySlug} refetch={mutate} />}
       </div>
-    </div>
-  )
+      {error && (
+        <div className="flex justify-center items-center">
+          <p className="text-red-500">Failed to fetch the data</p>
+        </div>
+      )}
+      {isLoading && (
+        <div className="h-full absolute top-1/2">
+          <p className="animate-pulse text-white text-xl">Loading....</p>
+        </div>
+      )}
+
+      {!isLoading && (
+        <div className="grid grid-cols-3">
+          {chapters?.map((chapter) => (
+            <Chapters key={chapter.slug} chapter={chapter} />
+          ))}
+        </div>
+      )}
+      {chapters?.length === 0 && (
+        <div className="h-full absolute top-1/2">
+          <p className="text-xl text-zinc-400">No Chapters</p>
+        </div>
+      )}
+    </main>
+  );
 }
 
-export default page
+const fetcher = async (url) => {
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error("Failed to fetch the data");
+  }
+  const data = await res.json();
+  console.log(data);
+
+  return data.data;
+};

@@ -42,6 +42,12 @@ export default function Home() {
           ))}
         </div>
       )}
+
+      {!isLoading && categories.length === 0 && (
+        <div className="h-full absolute top-1/2">
+          <p className="text-xl text-zinc-400">No Categories</p>
+        </div>
+      )}
     </main>
   );
 }
