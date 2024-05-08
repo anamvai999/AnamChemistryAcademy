@@ -3,6 +3,7 @@ import "./globals.css";
 
 import ReduxProvider from "@/redux/ReduxProvider";
 import NavBar from "@/components/frontDesign/NavBar/NavBar";
+import { AuthProvider } from "@/context/authContext/AuthProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,8 +18,10 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         {/* <ReduxProvider>{children}</ReduxProvider> */}
-        <NavBar />
-        {children}
+        <AuthProvider>
+          <NavBar />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );
