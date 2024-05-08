@@ -12,7 +12,6 @@ import {
 import { createContext, useEffect, useState } from "react";
 import auth from "../../../firebase.config";
 import useSWR from "swr";
-import { usePathname, useRouter } from "next/navigation";
 export const authContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
@@ -25,7 +24,8 @@ export const AuthProvider = ({ children }) => {
     console.log(currentUser);
 
     const url = `/api/user?userId=${uid}`;
-    const { data: logInfo } = useSWR(url, GetLogInfo);
+    const { data: logInfo, isLoading: isLogInfoLoading } = useSWR(url, GetLogInfo);
+
 
     const googleSignIn = () => {
         return signInWithPopup(auth, googleProvider);
@@ -82,7 +82,8 @@ export const AuthProvider = ({ children }) => {
         isLoading,
         emailSignIn,
         emailSignUp,
-        logInfo
+        logInfo,
+        isLogInfoLoading
     };
 
     return <authContext.Provider value={value}>{children}</authContext.Provider>;
