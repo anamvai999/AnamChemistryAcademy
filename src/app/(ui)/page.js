@@ -1,33 +1,27 @@
 "use client";
 
+import AddCategory from "@/components/frontDesign/AddCategory/AddCategory";
+import Category from "@/components/frontDesign/category/Category";
 import useSWR from "swr";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { usePathname } from "next/navigation";
-import ClassCard from "@/components/frontDesign/ClassCard/ClassCard";
-import AddClass from "@/components/frontDesign/AddClass/AddClass";
+import IsAdmin from "@/components/common/IsAdmin";
 
-export default function Page() {
-  const pathName = usePathname();
-
-  const categorySlug = pathName.split("/")[2];
-
+export default function Home() {
   const {
-    data: chapters,
+    data: categories,
     error,
     isLoading,
     mutate,
-  } = useSWR(`/api/chapters?slug=${categorySlug}`, fetcher);
-
-  console.log(chapters);
-
-  const isAdmin = true;
+  } = useSWR("/api/category", fetcher);
 
   return (
     <main className="flex min-h-screen flex-col items-center  ">
       <ToastContainer />
       <div className="flex justify-end">
-        {isAdmin && <AddClass categorySlug={categorySlug} refetch={mutate} />}
+        <IsAdmin>
+          <AddCategory refetch={mutate} />
+        </IsAdmin>
       </div>
       {error && (
         <div className="flex justify-center items-center">
@@ -41,15 +35,16 @@ export default function Page() {
       )}
 
       {!isLoading && (
-        <div className="">
-          {chapters?.map((chapter) => (
-            <ClassCard key={chapter.slug}  />
+        <div className="grid grid-cols-3">
+          {categories.map((category) => (
+            <Category key={category.id} data={category} />
           ))}
         </div>
       )}
-      {chapters?.length === 0 && (
+
+      {!isLoading && categories.length === 0 && (
         <div className="h-full absolute top-1/2">
-          <p className="text-xl text-zinc-400">No Chapters</p>
+          <p className="text-xl text-zinc-400">No Categories</p>
         </div>
       )}
     </main>
@@ -62,7 +57,5 @@ const fetcher = async (url) => {
     throw new Error("Failed to fetch the data");
   }
   const data = await res.json();
-  console.log(data);
-
   return data.data;
 };

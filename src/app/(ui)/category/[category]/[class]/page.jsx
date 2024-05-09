@@ -1,12 +1,12 @@
 "use client";
 
-import NavBar from "@/components/frontDesign/NavBar/NavBar";
-import Chapters from "@/components/frontDesign/Chapters/Chapters";
 import useSWR from "swr";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import AddChapter from "@/components/frontDesign/AddChapter/AddChapter";
 import { usePathname } from "next/navigation";
+import ClassCard from "@/components/frontDesign/ClassCard/ClassCard";
+import AddClass from "@/components/frontDesign/AddClass/AddClass";
+import IsAdmin from "@/components/common/IsAdmin";
 
 export default function Page() {
   const pathName = usePathname();
@@ -28,7 +28,9 @@ export default function Page() {
     <main className="flex min-h-screen flex-col items-center  ">
       <ToastContainer />
       <div className="flex justify-end">
-        {isAdmin && <AddChapter categorySlug={categorySlug} refetch={mutate} />}
+        <IsAdmin>
+          <AddClass categorySlug={categorySlug} refetch={mutate} />
+        </IsAdmin>
       </div>
       {error && (
         <div className="flex justify-center items-center">
@@ -42,9 +44,9 @@ export default function Page() {
       )}
 
       {!isLoading && (
-        <div className="grid grid-cols-3">
+        <div className="">
           {chapters?.map((chapter) => (
-            <Chapters key={chapter.slug} chapter={chapter} />
+            <ClassCard key={chapter.slug} />
           ))}
         </div>
       )}

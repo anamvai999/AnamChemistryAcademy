@@ -1,27 +1,37 @@
 "use client";
 
-import AddCategory from "@/components/frontDesign/AddCategory/AddCategory";
 import NavBar from "@/components/frontDesign/NavBar/NavBar";
-import Category from "@/components/frontDesign/category/Category";
+import Chapters from "@/components/frontDesign/Chapters/Chapters";
 import useSWR from "swr";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import AddChapter from "@/components/frontDesign/AddChapter/AddChapter";
+import { usePathname } from "next/navigation";
+import IsAdmin from "@/components/common/IsAdmin";
 
-export default function Home() {
+export default function Page() {
+  const pathName = usePathname();
+
+  const categorySlug = pathName.split("/")[2];
+
   const {
-    data: categories,
+    data: chapters,
     error,
     isLoading,
     mutate,
-  } = useSWR("/api/category", fetcher);
+  } = useSWR(`/api/chapters?slug=${categorySlug}`, fetcher);
+
+  console.log(chapters);
 
   const isAdmin = true;
- 
+
   return (
     <main className="flex min-h-screen flex-col items-center  ">
       <ToastContainer />
       <div className="flex justify-end">
-        {isAdmin && <AddCategory refetch={mutate} />}
+        <IsAdmin>
+          <AddChapter categorySlug={categorySlug} refetch={mutate} />
+        </IsAdmin>
       </div>
       {error && (
         <div className="flex justify-center items-center">
@@ -36,15 +46,14 @@ export default function Home() {
 
       {!isLoading && (
         <div className="grid grid-cols-3">
-          {categories.map((category) => (
-            <Category key={category.id} data={category} />
+          {chapters?.map((chapter) => (
+            <Chapters key={chapter.slug} chapter={chapter} />
           ))}
         </div>
       )}
-
-      {!isLoading && categories.length === 0 && (
+      {chapters?.length === 0 && (
         <div className="h-full absolute top-1/2">
-          <p className="text-xl text-zinc-400">No Categories</p>
+          <p className="text-xl text-zinc-400">No Chapters</p>
         </div>
       )}
     </main>
@@ -57,6 +66,7 @@ const fetcher = async (url) => {
     throw new Error("Failed to fetch the data");
   }
   const data = await res.json();
+  console.log(data);
+
   return data.data;
-  
 };
