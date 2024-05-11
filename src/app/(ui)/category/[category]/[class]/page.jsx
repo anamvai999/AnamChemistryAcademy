@@ -11,25 +11,27 @@ import IsAdmin from "@/components/common/IsAdmin";
 export default function Page() {
   const pathName = usePathname();
 
-  const categorySlug = pathName.split("/")[2];
+  const chapterSlug = pathName.split("/")[3];
+
+  console.log(chapterSlug);
 
   const {
-    data: chapters,
+    data: classes,
     error,
     isLoading,
     mutate,
-  } = useSWR(`/api/chapters?slug=${categorySlug}`, fetcher);
+  } = useSWR(`/api/classes?chapterSlug=${chapterSlug}`, fetcher);
 
-  console.log(chapters);
 
-  const isAdmin = true;
+  console.log(classes);
+
 
   return (
     <main className="flex min-h-screen flex-col items-center  ">
       <ToastContainer />
       <div className="flex justify-end">
         <IsAdmin>
-          <AddClass categorySlug={categorySlug} refetch={mutate} />
+          <AddClass chapterSlug={chapterSlug} refetch={mutate} />
         </IsAdmin>
       </div>
       {error && (
@@ -45,14 +47,14 @@ export default function Page() {
 
       {!isLoading && (
         <div className="">
-          {chapters?.map((chapter) => (
-            <ClassCard key={chapter.slug} />
+          {classes?.map((singleClass, index) => (
+            <ClassCard classNo={index+1} singleClass={singleClass} key={singleClass.slug} />
           ))}
         </div>
       )}
-      {chapters?.length === 0 && (
+      {classes?.length === 0 && (
         <div className="h-full absolute top-1/2">
-          <p className="text-xl text-zinc-400">No Chapters</p>
+          <p className="text-xl text-zinc-400">No Classes</p>
         </div>
       )}
     </main>
