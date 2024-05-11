@@ -6,9 +6,36 @@ import { BiPlus } from "react-icons/bi";
 import { PlusOutlined } from "@ant-design/icons";
 import { toast } from "react-toastify";
 
-const AddClass = ({ refetch }) => {
+const AddClass = ({ refetch, chapterSlug }) => {
+  const monthName = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "July",
+    "Aug",
+    "Sept",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  const date = new Date();
+
+  const currDate = date.getDate();
+  const currMonth = date.getMonth();
+  const currYear = date.getFullYear();
+
+  const dateString = `${currDate} ${monthName[currMonth]} ${currYear}`;
+
+  console.log(dateString);
+
   const [modalIsOpen, setIsOpen] = useState(false);
-  const [categoryData, setCategoryData] = useState({ thumbnail: "" });
+  const [categoryData, setCategoryData] = useState({
+    thumbnail: "",
+    uploadDate: dateString,
+  });
 
   // image upload
   const [previewOpen, setPreviewOpen] = useState(false);
@@ -82,7 +109,7 @@ const AddClass = ({ refetch }) => {
 
         categoryData.thumbnail = imageUrl;
 
-        await fetch("/api/category", {
+        await fetch(`/api/classes?chapterSlug=${chapterSlug}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -149,58 +176,58 @@ const AddClass = ({ refetch }) => {
         >
           <h2 className="text-xl  mb-4">Upload Class</h2>
           <form className="space-y-4 flex flex-col items-center justify-center">
-          <div className="">
+            <div className="">
               {/* Upload Thumbnail */}
               <Upload
-              listType="picture-card"
-              fileList={fileList}
-              onPreview={handlePreview}
-              onChange={handleChange}
-              className="text-white"
-            >
-              {fileList.length == 1 ? null : uploadButton}
-            </Upload>
+                listType="picture-card"
+                fileList={fileList}
+                onPreview={handlePreview}
+                onChange={handleChange}
+                className="text-white"
+              >
+                {fileList.length == 1 ? null : uploadButton}
+              </Upload>
 
-            {/* Preivew Thumbnail Start */}
-            {previewImage && (
-              <Image
-                alt="image"
-                wrapperStyle={{
-                  display: "none",
-                }}
-                preview={{
-                  visible: previewOpen,
-                  onVisibleChange: (visible) => setPreviewOpen(visible),
-                  afterOpenChange: (visible) => !visible && setPreviewImage(""),
-                }}
-                src={previewImage}
+              {/* Preivew Thumbnail Start */}
+              {previewImage && (
+                <Image
+                  alt="image"
+                  wrapperStyle={{
+                    display: "none",
+                  }}
+                  preview={{
+                    visible: previewOpen,
+                    onVisibleChange: (visible) => setPreviewOpen(visible),
+                    afterOpenChange: (visible) =>
+                      !visible && setPreviewImage(""),
+                  }}
+                  src={previewImage}
+                />
+              )}
+              {/* Preivew Thumbnail  End */}
+            </div>
+
+            <div className="flex flex-col gap-4">
+              <input
+                className="bg-white px-4 py-2 w-[40vw] rounded-md text-black placeholder:text-zinc-500"
+                onChange={handleInputChange}
+                name="title"
+                placeholder="Enter class title"
               />
-            )}
-            {/* Preivew Thumbnail  End */}
-          </div>
 
-          <div className="flex flex-col gap-4">
-         
-          <input
-              className="bg-white px-4 py-2 w-[40vw] rounded-md text-black placeholder:text-zinc-500"
-              onChange={handleInputChange}
-              name="title"
-              placeholder="Enter class title"
-            />
-         
-          <input
-              className="bg-white px-4 py-2 w-[40vw] rounded-md text-black placeholder:text-zinc-500"
-              onChange={handleInputChange}
-              name="video"
-              placeholder="Enter video link"
-            />
-          <input
-              className="bg-white px-4 py-2 w-[40vw] rounded-md text-black placeholder:text-zinc-500"
-              onChange={handleInputChange}
-              name="material"
-              placeholder="Enter material link"
-            />
-          </div>
+              <input
+                className="bg-white px-4 py-2 w-[40vw] rounded-md text-black placeholder:text-zinc-500"
+                onChange={handleInputChange}
+                name="video"
+                placeholder="Enter video link"
+              />
+              <input
+                className="bg-white px-4 py-2 w-[40vw] rounded-md text-black placeholder:text-zinc-500"
+                onChange={handleInputChange}
+                name="material"
+                placeholder="Enter material link"
+              />
+            </div>
           </form>
           <div className="flex gap-2 justify-end mt-4">
             <Button
