@@ -26,7 +26,7 @@
  
  .icon__btn {
     padding: 0 10px;
-    color: #7b2cbf;
+    color: white;
  }
  
  .slider__container {
@@ -50,7 +50,7 @@
  }
  
  .control_Container > span {
-    color: #9556cc;
+    color: white;
     font-size: 0.8rem;
     margin-left: 10px;
  }
@@ -58,4 +58,12 @@
  .second__control {
   display: flex;
   align-items: center;
+ }
+
+ .css-1fkkb0b-MuiSlider-root {
+   color: white !important;
+ }
+
+ .css-188mx6n-MuiSlider-root{
+   color: white !important
  }
