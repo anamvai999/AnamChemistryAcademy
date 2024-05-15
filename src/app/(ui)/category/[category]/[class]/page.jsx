@@ -7,11 +7,16 @@ import { usePathname } from "next/navigation";
 import ClassCard from "@/components/frontDesign/ClassCard/ClassCard";
 import AddClass from "@/components/frontDesign/AddClass/AddClass";
 import IsAdmin from "@/components/common/IsAdmin";
+import { useEffect, useState } from "react";
+import dynamic from 'next/dynamic'
+
+const Video = dynamic(() => import('@/components/frontDesign/video/Video'), { ssr: false })
 
 export default function Page() {
   const pathName = usePathname();
 
   const chapterSlug = pathName.split("/")[3];
+  const [videoSrc, setVideoSrc] = useState("");
 
   console.log(chapterSlug);
 
@@ -23,7 +28,11 @@ export default function Page() {
   } = useSWR(`/api/classes?chapterSlug=${chapterSlug}`, fetcher);
 
 
-  console.log(classes);
+  useEffect(()=> {
+    if(!isLoading && classes.length !== 0){
+      setVideoSrc(classes[0].video);
+    }
+  }, [classes, isLoading])
 
 
   return (
@@ -34,6 +43,13 @@ export default function Page() {
           <AddClass chapterSlug={chapterSlug} refetch={mutate} />
         </IsAdmin>
       </div>
+
+    {
+      !isLoading &&
+      classes.length !== 0 &&
+      <Video videoSrc={videoSrc} />
+    }
+
       {error && (
         <div className="flex justify-center items-center">
           <p className="text-red-500">Failed to fetch the data</p>

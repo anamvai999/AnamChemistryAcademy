@@ -9,7 +9,7 @@ import { formatTime } from './Format';
 import ReactPlayer from 'react-player';
 
 let count = 0;
-const Video = () => {
+const Video = ({videoSrc}) => {
     /*     const ReactPlayer = dynamic(() => import("react-player/youtube"), { ssr: false });
      */
     const videoPlayerRef = useRef(null);
@@ -135,7 +135,7 @@ const Video = () => {
                         
                         ref={videoPlayerRef}
                         className="player"
-                        url={"https://www.youtube.com/embed/NZzFOXGANMg?si=Vp2ro5AA31gsMoY6"}
+                        url={videoSrc}
                         width="100%"
                         height="100%"
                         playing={playing}
