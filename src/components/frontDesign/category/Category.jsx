@@ -1,14 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const Category = ({data}) => {
+const Category = ({ data }) => {
     console.log(data);
 
 
     return (
-        <Link href={`/category/${data.slug}`} className="flex items-center justify-center flex-wrap gap-3 p-5">
-            <div class="card card-compact w-72 bg-base-100 shadow-xl">
-                <figure>
+        <Link href={`/category/${data.slug}`}
+            >
+            <div class="card card-compact w-[80vw] md:w-60 bg-base-100 shadow-xl">
+                <figure className="h-40">
                     <Image
                         src={`${data?.thumbnail}`}
                         alt={`${data.title} image`}
