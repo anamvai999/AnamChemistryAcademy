@@ -14,6 +14,7 @@ const Video = ({videoSrc}) => {
      */
     const videoPlayerRef = useRef(null);
     const controlRef = useRef(null);
+    const playerContainerRef = useRef(null);
 
     const [videoState, setVideoState] = useState({
         playing: true,
@@ -124,27 +125,31 @@ const Video = ({videoSrc}) => {
         setVideoState({ ...videoState, buffer: false });
     };
 
+    const handleFullScreen = () => {
+        if (playerContainerRef.current) {
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            } else {
+                playerContainerRef.current.requestFullscreen();
+            }
+        }
+    };
     return (
         <div className="video_container">
-            <div>
-                <h2>React player</h2>
-            </div>
             <Container maxWidth="md" justify="center">
-                <div className="player__wrapper" onMouseMove={mouseMoveHandler}>
+                <div ref={playerContainerRef} className="player__wrapper w-full min-h-[70vh]" onMouseMove={mouseMoveHandler}>
                     <ReactPlayer
-                        
                         ref={videoPlayerRef}
-                        className="player"
+                        className="player min-h-[70vh]"
                         url={videoSrc}
                         width="100%"
-                        height="100%"
+                        height="50vh"
                         playing={playing}
                         volume={volume}
                         muted={muted}
                         onProgress={progressHandler}
                         onBuffer={bufferStartHandler}
                         onBufferEnd={bufferEndHandler}
-                        
                     />
 
                     {buffer && <p>Loading</p>}
@@ -170,6 +175,7 @@ const Video = ({videoSrc}) => {
                     />
                 </div>
             </Container>
+            <button onClick={handleFullScreen}>Full Screen</button>
         </div>
     )
 }
