@@ -31,9 +31,9 @@ const NavBar = () => {
     };
 
     return (
-        <>
+        <div>
             {/* bottom navigation for mobile*/}
-            <div className="btm-nav sm:hidden ">
+            <div className="btm-nav sm:hidden overflow-hidden z-50">
 
                 <Link href={"/"} className="hover:text-blue-500">
                     <IoMdHome />
@@ -116,7 +116,7 @@ const NavBar = () => {
                     )}
                 </div>
             </div >
-        </>
+        </div>
     )
 }
 

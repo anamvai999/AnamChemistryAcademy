@@ -45,7 +45,7 @@ export default function Page() {
       )}
 
       {!isLoading && (
-        <div className="grid grid-cols-3">
+        <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 mb-16 sm:mb-0">
           {chapters?.map((chapter) => (
             <Chapters key={chapter.slug} chapter={chapter} />
           ))}
