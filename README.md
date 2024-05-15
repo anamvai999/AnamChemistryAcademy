@@ -9,6 +9,7 @@
 7. npm install @tailwindcss/aspect-ratio@latest --save-dev
 8. npm i react-player
 9. npm install firebase
+10. npm install sweetalert2
 
 ## packges 
 1. reduxjs/toolkit
@@ -20,3 +21,4 @@
 7. tailwindcss/aspect-ratio
 8. react-player
 9. firebase
+10. sweetalert-2
