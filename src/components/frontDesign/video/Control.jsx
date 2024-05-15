@@ -109,6 +109,7 @@ const Control = ({
       <div className="bottom__container">
         <div className="slider__container">
           <PrettoSlider
+          className="text-white "
             min={0}
             max={100}
             value={played * 100}
@@ -134,7 +135,7 @@ const Control = ({
                             <SkipNext fontSize="medium" />
                         </div> */}
 
-              <div className="icon__btn" onClick={onMute}>
+              <div className="icon__btn text-white" onClick={onMute}>
                 {mute ? (
                   <VolumeOff fontSize="medium" />
                 ) : (
@@ -143,7 +144,7 @@ const Control = ({
               </div>
 
               <Slider
-                className={`${classes.volumeSlider} w-full`}
+                className={`${classes.volumeSlider} w-full text-white`}
                 onChange={onVolumeChangeHandler}
                 value={volume * 100}
                 onChangeCommitted={onVolumeSeekUp}

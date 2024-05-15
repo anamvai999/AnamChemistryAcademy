@@ -155,12 +155,12 @@ const AddClass = ({ refetch, chapterSlug }) => {
       marginRight: "-50%",
       transform: "translate(-50%, -50%)",
       color: "white",
-      zIndex: "99"
+      zIndex: "99",
     },
   };
 
   return (
-    <div className="z-50" >
+    <div className="" >
       <div className="flex justify-center ">
         <button
           title="Create Class"
@@ -176,7 +176,8 @@ const AddClass = ({ refetch, chapterSlug }) => {
           onRequestClose={closeModal}
           style={customStyles}
         >
-          <h2 className="text-xl  mb-4 text-white text-center">Upload Class</h2>
+        <div className="z-50">
+        <h2 className="text-xl  mb-4 text-white text-center">Upload Class</h2>
           <form className="space-y-4 flex flex-col items-center justify-center">
             <div className="">
               {/* Upload Thumbnail */}
@@ -247,6 +248,7 @@ const AddClass = ({ refetch, chapterSlug }) => {
               Create
             </Button>
           </div>
+        </div>
         </Modal>
       </div>
     </div>
