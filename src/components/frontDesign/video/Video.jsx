@@ -14,6 +14,7 @@ const Video = () => {
      */
     const videoPlayerRef = useRef(null);
     const controlRef = useRef(null);
+    const playerContainerRef = useRef(null);
 
     const [videoState, setVideoState] = useState({
         playing: true,
@@ -124,15 +125,23 @@ const Video = () => {
         setVideoState({ ...videoState, buffer: false });
     };
 
+    const handleFullScreen = () => {
+        if (playerContainerRef.current) {
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            } else {
+                playerContainerRef.current.requestFullscreen();
+            }
+        }
+    };
     return (
         <div className="video_container">
             <div>
                 <h2>React player</h2>
             </div>
             <Container maxWidth="md" justify="center">
-                <div className="player__wrapper" onMouseMove={mouseMoveHandler}>
+                <div ref={playerContainerRef} className="player__wrapper" onMouseMove={mouseMoveHandler}>
                     <ReactPlayer
-                        
                         ref={videoPlayerRef}
                         className="player"
                         url={"https://www.youtube.com/embed/NZzFOXGANMg?si=Vp2ro5AA31gsMoY6"}
@@ -144,7 +153,6 @@ const Video = () => {
                         onProgress={progressHandler}
                         onBuffer={bufferStartHandler}
                         onBufferEnd={bufferEndHandler}
-                        
                     />
 
                     {buffer && <p>Loading</p>}
@@ -170,6 +178,7 @@ const Video = () => {
                     />
                 </div>
             </Container>
+            <button onClick={handleFullScreen}>Full Screen</button>
         </div>
     )
 }
