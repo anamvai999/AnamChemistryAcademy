@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { BiPlus } from "react-icons/bi";
 import { PlusOutlined } from "@ant-design/icons";
 import { toast } from "react-toastify";
+import zIndex from "@mui/material/styles/zIndex";
 
 const AddClass = ({ refetch, chapterSlug }) => {
   const monthName = [
@@ -154,11 +155,12 @@ const AddClass = ({ refetch, chapterSlug }) => {
       marginRight: "-50%",
       transform: "translate(-50%, -50%)",
       color: "white",
+      zIndex: "99"
     },
   };
 
   return (
-    <div>
+    <div className="z-50" >
       <div className="flex justify-center ">
         <button
           title="Create Class"
@@ -174,7 +176,7 @@ const AddClass = ({ refetch, chapterSlug }) => {
           onRequestClose={closeModal}
           style={customStyles}
         >
-          <h2 className="text-xl  mb-4">Upload Class</h2>
+          <h2 className="text-xl  mb-4 text-white text-center">Upload Class</h2>
           <form className="space-y-4 flex flex-col items-center justify-center">
             <div className="">
               {/* Upload Thumbnail */}
@@ -183,7 +185,7 @@ const AddClass = ({ refetch, chapterSlug }) => {
                 fileList={fileList}
                 onPreview={handlePreview}
                 onChange={handleChange}
-                className="text-white"
+                className="text-white z-50"
               >
                 {fileList.length == 1 ? null : uploadButton}
               </Upload>
