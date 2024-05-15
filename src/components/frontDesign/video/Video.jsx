@@ -9,7 +9,7 @@ import { formatTime } from "./Format";
 import ReactPlayer from "react-player";
 
 let count = 0;
-const Video = ({ videoSrc }) => {
+const Video = ({ videoSrc, videoTitle }) => {
   /*     const ReactPlayer = dynamic(() => import("react-player/youtube"), { ssr: false });
    */
   const videoPlayerRef = useRef(null);
@@ -147,17 +147,16 @@ const Video = ({ videoSrc }) => {
       <Container maxWidth="md" justify="center">
         <div
           ref={playerContainerRef}
-          className="player__wrapper  w-full min-h-[70vh] z-20"
+          className="player__wrapper  w-full  z-20"
           onTouchStart={handleTouch}
           onMouseMove={mouseMoveHandler}
         >
           <ReactPlayer
             onTouchStart={handleTouch}
             ref={videoPlayerRef}
-            className="player min-h-[70vh] z-0"
+            className="player   z-0"
             url={videoSrc}
             width="100%"
-            height="50vh"
             playing={playing}
             volume={volume}
             muted={muted}
@@ -166,7 +165,7 @@ const Video = ({ videoSrc }) => {
             onBufferEnd={bufferEndHandler}
           />
 
-          <div className='absolute top-0 left-0 w-full h-full bg-red-400'></div>
+          <div onTouchStart={handleTouch} className='opacity-0 absolute top-0 left-0 w-full h-full bg-red-400'></div>
 
           {buffer && <p>Loading</p>}
 
@@ -188,10 +187,12 @@ const Video = ({ videoSrc }) => {
             duration={formatDuration}
             currentTime={formatCurrentTime}
             onMouseSeekDown={onSeekMouseDownHandler}
+            handleFullScreen={handleFullScreen}
+            videoTitle={videoTitle}
           />
         </div>
       </Container>
-      <button onClick={handleFullScreen}>Full Screen</button>
+      
     </div>
   );
 };

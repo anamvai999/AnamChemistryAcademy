@@ -19,6 +19,7 @@ export default function Page() {
 
   const chapterSlug = pathName.split("/")[3];
   const [videoSrc, setVideoSrc] = useState("");
+  const [videoTitle, setVideoTitle] = useState("");
 
   console.log(chapterSlug);
 
@@ -59,15 +60,16 @@ export default function Page() {
         </div>
       )}
 
-      <div className="flex w-full">
-        <div className="w-8/12">
-          {!isLoading && classes.length !== 0 && <Video videoSrc={videoSrc} />}
+      <div className="flex md:flex-row flex-col w-full">
+        <div className="w-full md:w-8/12">
+          {!isLoading && classes.length !== 0 && <Video videoTitle={videoTitle} videoSrc={videoSrc} />}
         </div>
-        <div className="w-4/12">
+        <div className="w-full md:w-4/12">
           {!isLoading && (
-            <div className="w-full">
+            <div className="w-full mt-4">
               {classes?.map((singleClass, index) => (
                 <ClassCard
+                setVideoTitle={setVideoTitle}
                   currVideoSrc={videoSrc}
                   setVideoSrc={setVideoSrc}
                   classNo={index + 1}
