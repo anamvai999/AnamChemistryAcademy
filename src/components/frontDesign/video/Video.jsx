@@ -147,7 +147,7 @@ const Video = ({ videoSrc }) => {
       <Container maxWidth="md" justify="center">
         <div
           ref={playerContainerRef}
-          className="player__wrapper w-full min-h-[70vh] z-20"
+          className="player__wrapper  w-full min-h-[70vh] z-20"
           onTouchStart={handleTouch}
           onMouseMove={mouseMoveHandler}
         >
@@ -165,6 +165,8 @@ const Video = ({ videoSrc }) => {
             onBuffer={bufferStartHandler}
             onBufferEnd={bufferEndHandler}
           />
+
+          <div className='absolute top-0 left-0 w-full h-full bg-red-400'></div>
 
           {buffer && <p>Loading</p>}
 
