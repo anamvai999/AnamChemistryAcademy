@@ -8,7 +8,7 @@ const Category = ({ data }) => {
     return (
         <Link href={`/category/${data.slug}`}
             >
-            <div class="card card-compact w-[80vw] md:w-60 bg-base-100 shadow-xl">
+            <div className="card card-compact w-[80vw] md:w-60 bg-base-100 shadow-xl">
                 <figure className="h-40">
                     <Image
                         src={`${data?.thumbnail}`}
