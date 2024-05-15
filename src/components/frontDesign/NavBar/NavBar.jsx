@@ -6,6 +6,8 @@ import Link from "next/link";
 import Image from "next/image";
 import React, { useContext, useEffect, useState } from "react";
 import { authContext } from "@/context/authContext/AuthProvider";
+import { BiUser } from "react-icons/bi";
+import IsAdmin from "@/components/common/IsAdmin";
 
 const NavBar = () => {
     const [hideLogic, setHideLogic] = useState(true);
@@ -96,8 +98,12 @@ const NavBar = () => {
                                 </div>
                                 <ul
                                     tabIndex={0}
-                                    className="mt-28 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
+                                    className="mt-28 z-[1] p-2 shadow menu menu-sm dropdown-content space-y-3 bg-base-100 rounded-box w-52"
                                 >
+                                    <IsAdmin>
+                                        
+                                    <li className="text-white"> <Link href="/manage/students"><BiUser/> Students</Link></li>
+                                    </IsAdmin>
                                     <button
                                         onClick={handleLogOut}
                                         className="btn  text-white bg-secondary hover:bg-blue-800"
