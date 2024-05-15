@@ -77,13 +77,13 @@ const Control = ({
     duration,
     currentTime,
     onMouseSeekDown,
-    controlRef
+    controlRef,
 }) => {
     const classes = useStyles;
 
 
     return (
-        <div className="control_Container" ref={controlRef}>
+        <div className="control_Container"  ref={controlRef}>
             <div className="top_container">
                 <h2>Video PLayer</h2>
             </div>
