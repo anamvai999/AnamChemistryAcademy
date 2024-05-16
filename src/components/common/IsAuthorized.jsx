@@ -37,7 +37,10 @@ const IsAuthorized = ({ children }) => {
     }
 
     setIsClient(true);
-  }, [userEmail]);
+
+  }, [currentUser]);
+
+
 
   if (!isClient) {
     return null;
