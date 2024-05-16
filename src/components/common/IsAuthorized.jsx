@@ -51,7 +51,7 @@ const IsAuthorized = ({ children }) => {
   }
 
   if (isLogInfoLoading) {
-    return <>Loading...</>;
+    return <></>;
   }
 
   if (currentUser && isAuthenticated) {
