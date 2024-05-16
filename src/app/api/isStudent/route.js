@@ -7,19 +7,11 @@ export async function GET(req) {
     const studentEmail = req.nextUrl.searchParams.get("studentEmail");
     await connectMongodb();
 
-    let data;
+    console.log("from server: ", studentEmail);
 
-    if (studentEmail) {
-      data = await studentModel.find({ email: studentEmail });
-      console.log(data);
-      if (data.length > 0 ) {
-        return NextResponse.json({ success: true, data });
-      }
+    const data = await studentModel.findOne({ email: studentEmail });
 
-      return NextResponse.json({ success: false, data });
-    } else {
-      return NextResponse.json({ success: false, data });
-    }
+    return NextResponse.json({ success: true, data});
   } catch (error) {
     return NextResponse.json({ success: false, error: error.message });
   }

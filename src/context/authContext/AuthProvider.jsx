@@ -20,6 +20,7 @@ export const AuthProvider = ({ children }) => {
     const googleProvider = new GoogleAuthProvider();
     const [currentUser, setCurrentUser] = useState(null);
     const [uid, setUid] = useState("");
+    const [userEmail, setUserEmail] = useState(null);
 
     console.log(currentUser);
 
@@ -53,6 +54,7 @@ export const AuthProvider = ({ children }) => {
             if (currentUser) {
                 setCurrentUser(currentUser);
                 setUid(currentUser.uid);
+                setUserEmail(currentUser.email);
                 await fetch("/api/jwt", {
                     method: "POST",
                     body: JSON.stringify({
@@ -83,7 +85,8 @@ export const AuthProvider = ({ children }) => {
         emailSignIn,
         emailSignUp,
         logInfo,
-        isLogInfoLoading
+        isLogInfoLoading,
+        userEmail
     };
 
     return <authContext.Provider value={value}>{children}</authContext.Provider>;
