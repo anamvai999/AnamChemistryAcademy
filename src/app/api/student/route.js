@@ -30,7 +30,8 @@ export async function GET(req) {
     await connectMongodb();
 
     let data;
-    console.log(email);
+
+
 
     if (email) {
       // Ensure you have an index on the 'email' field for regex queries
@@ -47,7 +48,7 @@ export async function GET(req) {
 
     return NextResponse.json({ success: true, data });
   } catch (error) {
-    return NextResponse.json({ error: error.message });
+    return NextResponse.json({ success: false, error: error.message });
   }
 }
 
@@ -58,8 +59,15 @@ export async function DELETE(req) {
 
     const res = await studentModel.deleteOne({ email });
 
-    return NextResponse.json({ success: true, data: res, message: "Succesfully deleted!" });
+    return NextResponse.json({
+      success: true,
+      data: res,
+      message: "Succesfully deleted!",
+    });
   } catch (error) {
-    return NextResponse.json({ error: error.message , message: "Error while deleting"});
+    return NextResponse.json({
+      error: error.message,
+      message: "Error while deleting",
+    });
   }
 }

@@ -33,7 +33,7 @@ const Page = () => {
       <ToastContainer />
       <IsAdmin>
         <AddStudent refetch={mutate} />
-      </IsAdmin>
+     
       <main className="flex min-h-screen flex-col items-center  ">
         {error && (
           <div className="flex justify-center items-center">
@@ -87,6 +87,7 @@ const Page = () => {
           </div>
         )}
       </main>
+      </IsAdmin>
     </>
   );
 };
