@@ -5,31 +5,39 @@ import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 
 const IsAuthorized = ({ children }) => {
-  const { logInfo, isLogInfoLoading, currentUser } = useContext(authContext);
+  const { logInfo, isLogInfoLoading, currentUser, userEmail } =
+    useContext(authContext);
   const router = useRouter();
   const [isClient, setIsClient] = useState(false);
   const [isStudent, setIsStudent] = useState(false);
 
+  console.log(userEmail);
+
   useEffect(() => {
     try {
-      fetch(`/api/isStudent?studentEmail=${currentUser?.email}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          setIsStudent(data.success);
-        });
+      if (userEmail !== null) {
+        fetch(`/api/isStudent?studentEmail=${userEmail}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data);
+            if (data?.data?.email === userEmail) {
+              setIsStudent(true);
+            } else {
+              setIsStudent(false);
+            }
+          });
+      }
     } catch (err) {
       console.log(err);
     }
 
     setIsClient(true);
-  }, [currentUser]);
-
-
+  }, [userEmail]);
 
   if (!isClient) {
     return null;
