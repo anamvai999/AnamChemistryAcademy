@@ -11,7 +11,7 @@ const IsAuthorized = ({ children }) => {
   const [isClient, setIsClient] = useState(false);
   const [isStudent, setIsStudent] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
+  const [studentEmail, setStudentEmail] = useState('');
   useEffect(() => {
     const checkStudentStatus = async () => {
       if (userEmail) {
@@ -23,6 +23,7 @@ const IsAuthorized = ({ children }) => {
             },
           });
           const data = await response.json();
+          setStudentEmail(data?.data?.email)
           if (data?.data?.email === userEmail) {
             setIsStudent(true);
           } else {
@@ -39,7 +40,7 @@ const IsAuthorized = ({ children }) => {
   }, [userEmail]);
 
   useEffect(() => {
-    if (logInfo && (logInfo.role === "admin" || isStudent)) {
+    if (logInfo && (logInfo.role === "admin" || logInfo.email === studentEmail)) {
       setIsAuthenticated(true);
     } else {
       setIsAuthenticated(false);
