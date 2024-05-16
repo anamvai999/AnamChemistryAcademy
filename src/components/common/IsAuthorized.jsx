@@ -16,7 +16,7 @@ const IsAuthorized = ({ children }) => {
     const checkStudentStatus = async () => {
       if (userEmail) {
         try {
-          const response = await fetch(`/api/isStudent?studentEmail=${userEmail}`, {
+          const response = await fetch(`/api/is-student?studentEmail=${userEmail}`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
