@@ -10,50 +10,51 @@ const IsAuthorized = ({ children }) => {
   const router = useRouter();
   const [isClient, setIsClient] = useState(false);
   const [isStudent, setIsStudent] = useState(false);
-
-  console.log(userEmail);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    try {
-      if (userEmail !== null) {
-        fetch(`/api/isStudent?studentEmail=${userEmail}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            console.log(data);
-            if (data?.data?.email === userEmail) {
-              setIsStudent("user");
-            } else {
-              setIsStudent(false);
-            }
+    const checkStudentStatus = async () => {
+      if (userEmail) {
+        try {
+          const response = await fetch(`/api/isStudent?studentEmail=${userEmail}`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
           });
+          const data = await response.json();
+          if (data?.data?.email === userEmail) {
+            setIsStudent(true);
+          } else {
+            setIsStudent(false);
+          }
+        } catch (err) {
+          console.log(err);
+        }
       }
-    } catch (err) {
-      console.log(err);
-    }
+    };
 
+    checkStudentStatus();
     setIsClient(true);
+  }, [userEmail]);
 
-  }, [currentUser]);
-
-console.log(logInfo.role);
-console.log(isStudent);
+  useEffect(() => {
+    if (logInfo && (logInfo.role === "admin" || isStudent)) {
+      setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false);
+    }
+  }, [logInfo, isStudent]);
 
   if (!isClient) {
     return null;
   }
 
-  if (
-    currentUser &&
-    !isLogInfoLoading &&
-    logInfo != null &&
-    logInfo != undefined &&
-    (logInfo.role === "admin" || isStudent)
-  ) {
+  if (isLogInfoLoading) {
+    return <>Loading...</>;
+  }
+
+  if (currentUser && isAuthenticated) {
     return children;
   } else {
     return <>Buy course first</>;
