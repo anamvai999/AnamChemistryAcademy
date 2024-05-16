@@ -26,7 +26,7 @@ const IsAuthorized = ({ children }) => {
           .then((data) => {
             console.log(data);
             if (data?.data?.email === userEmail) {
-              setIsStudent(true);
+              setIsStudent("user");
             } else {
               setIsStudent(false);
             }
@@ -40,7 +40,8 @@ const IsAuthorized = ({ children }) => {
 
   }, [currentUser]);
 
-
+console.log(logInfo.role);
+console.log(isStudent);
 
   if (!isClient) {
     return null;
