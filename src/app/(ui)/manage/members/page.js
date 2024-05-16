@@ -11,28 +11,32 @@ import useSWR from "swr";
 
 const Page = () => {
 
-  const [url, setUrl] = useState("/api/student");
+  const [url, setUrl] = useState("/api/user");
 
   const {
-    data: students,
+    data: members,
     error,
     isLoading,
     mutate,
   } = useSWR(`${url}`, fetcher);
 
+
+
+
   const onSearch = (value) => {
       setUrl((prev) =>{
-        return `/api/student?email=${value}`
+        return `/api/user?search=${value}`
       })
 
       mutate();
   };
 
+  console.log(members);
+
   return (
     <>
       <ToastContainer />
       <IsAdmin>
-        <AddStudent refetch={mutate} />
      
       <main className="flex min-h-screen flex-col items-center  ">
         {error && (
@@ -63,17 +67,19 @@ const Page = () => {
                 <thead>
                   <tr>
                     <th>SL</th>
+                    <th>Name</th>
                     <th>Email</th>
+                    <th>Role</th>
                     <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {students?.map((student, index) => (
+                  {members?.map((member, index) => (
                     <StudentCard
                     refetch={mutate}
                       index={index + 1}
-                      key={student._id}
-                      data={student}
+                      key={member._id}
+                      data={member}
                     />
                   ))}
                 </tbody>
@@ -81,9 +87,9 @@ const Page = () => {
             </div>
           </div>
         )}
-        {students?.length === 0 && (
+        {members?.length === 0 && (
           <div className="h-full absolute top-1/2">
-            <p className="text-xl text-zinc-400">No Students</p>
+            <p className="text-xl text-zinc-400">No members</p>
           </div>
         )}
       </main>
