@@ -147,7 +147,7 @@ const Video = ({ videoSrc, videoTitle }) => {
       <Container maxWidth="md" justify="center">
         <div
           ref={playerContainerRef}
-          className="player__wrapper  w-full  "
+          className="player__wrapper  w-full  min-h-[40vh]"
           onTouchStart={handleTouch}
           onMouseMove={mouseMoveHandler}
         >
@@ -157,6 +157,7 @@ const Video = ({ videoSrc, videoTitle }) => {
             className="player   z-0"
             url={videoSrc}
             width="100%"
+            height="100%"
             playing={playing}
             volume={volume}
             muted={muted}

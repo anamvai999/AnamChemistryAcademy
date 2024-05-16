@@ -9,6 +9,7 @@ import AddClass from "@/components/frontDesign/AddClass/AddClass";
 import IsAdmin from "@/components/common/IsAdmin";
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
+import IsAuthorized from "@/components/common/IsAuthorized";
 
 const Video = dynamic(() => import("@/components/frontDesign/video/Video"), {
   ssr: false,
@@ -60,6 +61,8 @@ export default function Page() {
         </div>
       )}
 
+      <IsAuthorized>
+
       <div className="flex md:flex-row flex-col w-full">
         <div className="w-full md:w-8/12">
           {!isLoading && classes.length !== 0 && <Video videoTitle={videoTitle} videoSrc={videoSrc} />}
@@ -86,6 +89,8 @@ export default function Page() {
           )}
         </div>
       </div>
+      </IsAuthorized>
+
     </main>
   );
 }
