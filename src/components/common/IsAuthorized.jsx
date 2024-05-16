@@ -1,29 +1,31 @@
 "use client";
 
 import { authContext } from "@/context/authContext/AuthProvider";
-import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 
 const IsAuthorized = ({ children }) => {
   const { logInfo, isLogInfoLoading, currentUser, userEmail } =
     useContext(authContext);
-  const router = useRouter();
   const [isClient, setIsClient] = useState(false);
   const [isStudent, setIsStudent] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [studentEmail, setStudentEmail] = useState('');
+  const [studentEmail, setStudentEmail] = useState("");
+
   useEffect(() => {
     const checkStudentStatus = async () => {
       if (userEmail) {
         try {
-          const response = await fetch(`/api/is-student?studentEmail=${userEmail}`, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
+          const response = await fetch(
+            `/api/is-student?studentEmail=${userEmail}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
           const data = await response.json();
-          setStudentEmail(data?.data?.email)
+          setStudentEmail(data?.data?.email);
           if (data?.data?.email === userEmail) {
             setIsStudent(true);
           } else {
@@ -37,15 +39,16 @@ const IsAuthorized = ({ children }) => {
 
     checkStudentStatus();
     setIsClient(true);
-  }, [userEmail]);
 
-  useEffect(() => {
-    if (logInfo && (logInfo.role === "admin" || logInfo.email === studentEmail)) {
+    if (
+      logInfo &&
+      (logInfo.role === "admin" || logInfo.email === studentEmail)
+    ) {
       setIsAuthenticated(true);
     } else {
       setIsAuthenticated(false);
     }
-  }, [logInfo, isStudent]);
+  }, [logInfo, isStudent, studentEmail, userEmail]);
 
   if (!isClient) {
     return null;
