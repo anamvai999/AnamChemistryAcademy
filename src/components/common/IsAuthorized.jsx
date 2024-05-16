@@ -29,7 +29,7 @@ const IsAuthorized = ({ children }) => {
     setIsClient(true);
   }, [currentUser]);
 
-
+  console.log(isStudent);
 
   if (!isClient) {
     return null;
