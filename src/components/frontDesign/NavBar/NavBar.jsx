@@ -102,7 +102,7 @@ const NavBar = () => {
                                 >
                                     <IsAdmin>
                                         
-                                    <li className="text-white"> <Link href="/manage/students"><BiUser/> Students</Link></li>
+                                    <li className="text-white"> <Link href="/manage/members"><BiUser/> Members</Link></li>
                                     </IsAdmin>
                                     <button
                                         onClick={handleLogOut}
