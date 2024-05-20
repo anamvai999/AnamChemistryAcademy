@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 export async function POST(req) {
   try {
     const data = await req.json();
-    const token = jwt.sign(data, process.env.JWT_SECRET, {
+    const token = jwt.sign(data, process.env.NEXT_PUBLIC_JWT_SECRET, {
       expiresIn: "1h",
     });
     return NextResponse.json(cookies().set("token", token));
