@@ -2,18 +2,26 @@
 import { Button, Image, Input, Upload } from "antd";
 import Modal from "react-modal";
 import React, { useEffect, useState } from "react";
-import { BiPlus } from "react-icons/bi";
+import { BiEdit, BiTrash } from "react-icons/bi";
 import { PlusOutlined } from "@ant-design/icons";
 import { toast } from "react-toastify";
+import IsAdmin from "@/components/common/IsAdmin";
 
-const AddCategory = ({ refetch }) => {
+const EditCategory = ({ refetch, id, data }) => {
   const [modalIsOpen, setIsOpen] = useState(false);
-  const [categoryData, setCategoryData] = useState({ thumbnail: "" });
+  const [categoryData, setCategoryData] = useState(data);
 
   // image upload
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [fileList, setFileList] = useState([]);
+
+  useEffect(() => {
+    if (data.thumbnail) {
+      setPreviewImage(data.thumbnail);
+      setFileList([{ url: data.thumbnail }]);
+    }
+  }, [data]);
 
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
@@ -60,49 +68,52 @@ const AddCategory = ({ refetch }) => {
 
   // Submitting all Data
   const handleSubmit = async () => {
-    console.log(categoryData);
-
     try {
-      const imgData = new FormData();
-      imgData.append("image", fileList[0].originFileObj);
+      let imageUrl = categoryData.thumbnail;
+      
+      if (fileList.length > 0 && fileList[0].originFileObj) {
+        const imgData = new FormData();
+        imgData.append("image", fileList[0].originFileObj);
 
-      const response = await fetch(
-        "https://api.imgbb.com/1/upload?key=aeda9807e6a4dd4f692343e011fdc790",
-        {
-          method: "POST",
-          body: imgData,
+        const response = await fetch(
+          "https://api.imgbb.com/1/upload?key=aeda9807e6a4dd4f692343e011fdc790",
+          {
+            method: "POST",
+            body: imgData,
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          imageUrl = data.data.url;
+        } else {
+          throw new Error("Image upload failed");
         }
-      );
+      }
 
-      console.log(response);
+      const updatedCategoryData = { ...categoryData, thumbnail: imageUrl };
 
-      if (response.ok) {
-        const data = await response.json();
-        const imageUrl = data.data.url;
+      const result = await fetch(`/api/category?id=${data._id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedCategoryData),
+      });
 
-        categoryData.thumbnail = imageUrl;
+      const resultData = await result.json();
 
-        await fetch("/api/category", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(categoryData),
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            refetch();
-            closeModal();
-            if (data.success) {
-              toast.success(data.message);
-            } else {
-              toast.error(data.message);
-            }
-          });
+      refetch();
+      closeModal();
+
+      if (resultData.success) {
+        toast.success(resultData.message);
+      } else {
+        toast.error(resultData.message);
       }
     } catch (error) {
       toast.error("Something went wrong!");
-      console.log("Error uploading image: ", error);
+      console.error("Error uploading image: ", error);
     }
   };
 
@@ -115,7 +126,7 @@ const AddCategory = ({ refetch }) => {
     setIsOpen(false);
   }
 
-  // Custon Styles for Modal
+  // Custom Styles for Modal
   const customStyles = {
     content: {
       backgroundColor: "black",
@@ -130,24 +141,57 @@ const AddCategory = ({ refetch }) => {
     },
   };
 
+  const handleDeleteItem = async () => {
+    try {
+      const result = await fetch(`/api/category?id=${data._id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const resultData = await result.json();
+
+      if (resultData.success) {
+        refetch();
+        toast.success(resultData.message);
+      } else {
+        toast.error(resultData.message);
+      }
+    } catch (error) {
+      toast.error("Something went wrong!");
+      console.error("Error uploading image: ", error);
+    }
+  };
+
   return (
-    <div className="mb-6">
+    <div>
       <div className="flex justify-center ">
-        <button
-          title="Create Category"
-          onClick={openModal}
-          size="large"
-          className="flex items-center gap-2 mt-4 border border-white text-xl rounded-full p-2"
-        >
-          <BiPlus />
-        </button>
+        <IsAdmin>
+          <div className="flex gap-4 justify-center items-center">
+            <button
+              onClick={openModal}
+              className="flex items-center justify-center gap-2 bg-green-600 text-white px-3 py-2 rounded-md"
+            >
+              <BiEdit />
+              Edit
+            </button>
+            <button
+              onClick={handleDeleteItem}
+              className="flex items-center justify-center gap-2 bg-red-600 text-white px-3 py-2 rounded-md"
+            >
+              <BiTrash />
+              Delete
+            </button>
+          </div>
+        </IsAdmin>
 
         <Modal
           isOpen={modalIsOpen}
           onRequestClose={closeModal}
           style={customStyles}
         >
-          <h2 className="text-xl  mb-4">Create Category</h2>
+          <h2 className="text-xl mb-4">Update Category</h2>
           <form className="space-y-4">
             {/* Upload Thumbnail */}
             <Upload
@@ -157,10 +201,10 @@ const AddCategory = ({ refetch }) => {
               onChange={handleChange}
               className="text-white"
             >
-              {fileList.length == 1 ? null : uploadButton}
+              {fileList.length === 1 ? null : uploadButton}
             </Upload>
 
-            {/* Preivew Thumbnail Start */}
+            {/* Preview Thumbnail Start */}
             {previewImage && (
               <Image
                 alt="image"
@@ -170,20 +214,20 @@ const AddCategory = ({ refetch }) => {
                 preview={{
                   visible: previewOpen,
                   onVisibleChange: (visible) => setPreviewOpen(visible),
-                  afterOpenChange: (visible) => !visible && setPreviewImage(""),
                 }}
                 src={previewImage}
               />
             )}
-            {/* Preivew Thumbnail  End */}
+            {/* Preview Thumbnail End */}
 
             <Input
-              className=""
+              defaultValue={categoryData.title}
               onChange={handleInputChange}
               name="title"
               placeholder="Enter category title"
             />
             <Input
+              defaultValue={categoryData.slug}
               onChange={handleInputChange}
               name="slug"
               placeholder="Enter category slug"
@@ -202,7 +246,7 @@ const AddCategory = ({ refetch }) => {
               className="bg-green-400 text-white border-none"
               onClick={handleSubmit}
             >
-              Create
+              Update
             </Button>
           </div>
         </Modal>
@@ -219,4 +263,4 @@ const getBase64 = (file) =>
     reader.onerror = (error) => reject(error);
   });
 
-export default AddCategory;
+export default EditCategory;

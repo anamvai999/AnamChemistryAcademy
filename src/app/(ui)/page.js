@@ -37,7 +37,7 @@ export default function Home() {
       {!isLoading && (
         <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 mb-16 sm:mb-0">
           {categories.map((category) => (
-            <Category key={category.id} data={category} />
+            <Category key={category.id} data={category} refetch={mutate} />
           ))}
         </div>
       )}

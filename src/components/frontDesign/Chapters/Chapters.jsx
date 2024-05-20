@@ -9,6 +9,7 @@ const Page = ({ chapter }) => {
 
   return (
     <Link href={`${url}/${chapter.slug}`}>
+      <p>hello</p>
       <div className="card card-compact w-[80vw] md:w-60 bg-base-100 shadow-xl">
         <figure className="h-40">
           <Image
