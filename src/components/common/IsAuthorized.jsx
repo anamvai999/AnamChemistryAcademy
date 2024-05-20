@@ -38,7 +38,8 @@ const IsAuthorized = ({ children }) => {
     checkStudentStatus();
     setIsClient(true);
   }, [userEmail]);
-
+console.log(logInfo.email);
+  console.log(studentEmail);
   useEffect(() => {
     if (logInfo && (logInfo.role === "admin" || logInfo.email === studentEmail)) {
       setIsAuthenticated(true);
