@@ -28,7 +28,7 @@ const IsAdmin = ({ children }) => {
   } else {
     return <div className="absolute top-1/2  ">
       <p className="text-3xl text-zinc-500">
-      Oops! No Course For you
+        Oops! No Course For you
       </p>
     </div>;
   }
