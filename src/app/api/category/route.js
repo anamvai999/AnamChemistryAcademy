@@ -17,7 +17,7 @@ export async function POST(req) {
       });
     }
 
-    await categoryModel.create({...data, chapters: []});
+    await categoryModel.create(data);
     return NextResponse.json({ success: true, message: "Category created" });
   } catch (error) {
     console.log(error);

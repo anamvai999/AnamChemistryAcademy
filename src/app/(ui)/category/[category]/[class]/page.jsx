@@ -72,6 +72,7 @@ export default function Page() {
             <div className="w-full mt-4">
               {classes?.map((singleClass, index) => (
                 <ClassCard
+                refetch={mutate}
                 setVideoTitle={setVideoTitle}
                   currVideoSrc={videoSrc}
                   setVideoSrc={setVideoSrc}
@@ -82,12 +83,12 @@ export default function Page() {
               ))}
             </div>
           )}
+        </div>
           {classes?.length === 0 && (
             <div className="h-full absolute top-1/2">
               <p className="text-xl text-zinc-400">No Classes</p>
             </div>
           )}
-        </div>
       </div>
       </IsAuthorized>
 

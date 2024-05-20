@@ -2,12 +2,12 @@
 import { Button, Image, Input, Upload } from "antd";
 import Modal from "react-modal";
 import React, { useEffect, useState } from "react";
-import { BiPlus } from "react-icons/bi";
+import { BiEdit, BiPlus, BiTrash } from "react-icons/bi";
 import { PlusOutlined } from "@ant-design/icons";
 import { toast } from "react-toastify";
-import zIndex from "@mui/material/styles/zIndex";
+import IsAdmin from "@/components/common/IsAdmin";
 
-const AddClass = ({ refetch, chapterSlug }) => {
+const EditClass = ({ refetch, data }) => {
   const monthName = [
     "Jan",
     "Feb",
@@ -33,11 +33,7 @@ const AddClass = ({ refetch, chapterSlug }) => {
   console.log(dateString);
 
   const [modalIsOpen, setIsOpen] = useState(false);
-  const [classes, setClasses] = useState({
-    thumbnail: "",
-    uploadDate: dateString,
-    chapterSlug
-  });
+  const [classes, setClasses] = useState(data);
 
   console.log(classes);
 
@@ -45,6 +41,13 @@ const AddClass = ({ refetch, chapterSlug }) => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [fileList, setFileList] = useState([]);
+
+  useEffect(() => {
+    if (classes.thumbnail) {
+      setPreviewImage(classes.thumbnail);
+      setFileList([{ url: classes.thumbnail }]);
+    }
+  }, [classes]);
 
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
@@ -57,6 +60,7 @@ const AddClass = ({ refetch, chapterSlug }) => {
   const handleChange = ({ fileList: newFileList }) => {
     setFileList(newFileList);
   };
+
 
   // Upload button
   const uploadButton = (
@@ -113,8 +117,8 @@ const AddClass = ({ refetch, chapterSlug }) => {
 
         classes.thumbnail = imageUrl;
 
-        await fetch(`/api/classes`, {
-          method: "POST",
+        await fetch(`/api/classes?id=${classes._id}`, {
+          method: "PATCH",
           headers: {
             "Content-Type": "application/json",
           },
@@ -165,17 +169,50 @@ const AddClass = ({ refetch, chapterSlug }) => {
     },
   };
 
+
+  const handleDeleteItem = async () => {
+    try {
+      const result = await fetch(`/api/classes?id=${classes._id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const resultData = await result.json();
+
+      if (resultData.success) {
+        refetch();
+        toast.success(resultData.message);
+      } else {
+        toast.error(resultData.message);
+      }
+    } catch (error) {
+      toast.error("Something went wrong!");
+    }
+  };
+
   return (
-    <div className="" >
+    <div className="pb-4" >
       <div className="flex justify-center ">
-        <button
-          title="Create Class"
-          onClick={openModal}
-          size="large"
-          className="flex items-center gap-2 mt-4 border border-white text-xl rounded-full p-2"
-        >
-          <BiPlus />
-        </button>
+      <IsAdmin>
+          <div className="flex gap-4 justify-center items-center">
+            <button
+              onClick={openModal}
+              className="flex items-center justify-center gap-2 bg-green-600 text-white px-3 py-2 rounded-md"
+            >
+              <BiEdit />
+              Edit
+            </button>
+            <button
+              onClick={handleDeleteItem}
+              className="flex items-center justify-center gap-2 bg-red-600 text-white px-3 py-2 rounded-md"
+            >
+              <BiTrash />
+              Delete
+            </button>
+          </div>
+        </IsAdmin>
 
         <Modal
           isOpen={modalIsOpen}
@@ -183,7 +220,7 @@ const AddClass = ({ refetch, chapterSlug }) => {
           style={customStyles}
         >
         <div className="z-50">
-        <h2 className="text-xl  mb-4 text-white text-center">Upload Class</h2>
+        <h2 className="text-xl  mb-4 text-white text-center">Update Class</h2>
           <form className="space-y-4 flex flex-col items-center justify-center">
             <div className="">
               {/* Upload Thumbnail */}
@@ -222,6 +259,7 @@ const AddClass = ({ refetch, chapterSlug }) => {
                 onChange={handleInputChange}
                 name="title"
                 placeholder="Enter class title"
+                defaultValue={classes.title}
               />
 
               <input
@@ -229,11 +267,13 @@ const AddClass = ({ refetch, chapterSlug }) => {
                 onChange={handleInputChange}
                 name="video"
                 placeholder="Enter video link"
+                defaultValue={classes.video}
               />
               <input
                 className="bg-white px-4 py-2 w-[40vw] rounded-md text-black placeholder:text-zinc-500"
                 onChange={handleInputChange}
                 name="material"
+                defaultValue={classes.material}
                 placeholder="Enter material link"
               />
             </div>
@@ -251,7 +291,7 @@ const AddClass = ({ refetch, chapterSlug }) => {
               className="bg-green-400 text-white border-none"
               onClick={handleSubmit}
             >
-              Create
+              Update
             </Button>
           </div>
         </div>
@@ -269,4 +309,4 @@ const getBase64 = (file) =>
     reader.onerror = (error) => reject(error);
   });
 
-export default AddClass;
+export default EditClass;
