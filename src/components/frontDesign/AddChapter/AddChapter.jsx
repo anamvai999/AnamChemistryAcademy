@@ -6,8 +6,8 @@ import { BiPlus } from "react-icons/bi";
 import { PlusOutlined } from "@ant-design/icons";
 import { toast } from "react-toastify";
 
-const AddChapter = ({ refetch , categorySlug}) => {
- 
+const AddChapter = ({ refetch, categorySlug }) => {
+
 
   const [modalIsOpen, setIsOpen] = useState(false);
   const [chapterData, setChapterData] = useState({ thumbnail: "" });
@@ -62,21 +62,19 @@ const AddChapter = ({ refetch , categorySlug}) => {
 
   // Submitting all Data
   const handleSubmit = async () => {
-    console.log(chapterData);
 
     try {
       const imgData = new FormData();
       imgData.append("image", fileList[0].originFileObj);
 
       const response = await fetch(
-        "https://api.imgbb.com/1/upload?key=aeda9807e6a4dd4f692343e011fdc790",
+        `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_KEY}`,
         {
           method: "POST",
           body: imgData,
         }
       );
 
-      console.log(response);
 
       if (response.ok) {
         const data = await response.json();
