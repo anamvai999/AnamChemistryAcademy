@@ -19,7 +19,7 @@ export default function Page() {
     error,
     isLoading,
     mutate,
-  } = useSWR(`/api/chapters?slug=${categorySlug}`, fetcher);
+  } = useSWR(`/api/chapters?categorySlug=${categorySlug}`, fetcher);
 
   console.log(chapters);
 
@@ -47,7 +47,7 @@ export default function Page() {
       {!isLoading && (
         <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 mb-16 sm:mb-0">
           {chapters?.map((chapter) => (
-            <Chapters key={chapter.slug} chapter={chapter} />
+            <Chapters refetch={mutate} key={chapter.slug} chapter={chapter} />
           ))}
         </div>
       )}
