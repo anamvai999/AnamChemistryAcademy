@@ -1,10 +1,8 @@
 "use client";
 import IsAdmin from "@/components/common/IsAdmin";
-import AddStudent from "@/components/frontDesign/AddStudent/AddStudent";
 import StudentCard from "@/components/frontDesign/StudentCard/StudentCard";
 import Search from "antd/es/input/Search";
-import { NEXT_URL } from "next/dist/client/components/app-router-headers";
-import React, { useState } from "react";
+import { useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useSWR from "swr";

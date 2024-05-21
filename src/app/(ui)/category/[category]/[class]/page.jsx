@@ -62,36 +62,36 @@ export default function Page() {
       )}
 
       <IsAuthorized>
-
-      <div className="flex md:flex-row flex-col w-full">
-        <div className="w-full md:w-8/12">
-          {!isLoading && classes.length !== 0 && <Video videoTitle={videoTitle} videoSrc={videoSrc} />}
+        <div className="flex md:flex-row flex-col w-full">
+          <div className="w-full md:w-8/12">
+            {!isLoading && classes.length !== 0 && (
+              <Video videoTitle={videoTitle} videoSrc={videoSrc} />
+            )}
+          </div>
+          <div className="w-full md:w-4/12">
+            {!isLoading && (
+              <div className="w-full mt-4">
+                {classes?.map((singleClass, index) => (
+                  <ClassCard
+                    refetch={mutate}
+                    setVideoTitle={setVideoTitle}
+                    currVideoSrc={videoSrc}
+                    setVideoSrc={setVideoSrc}
+                    classNo={index + 1}
+                    singleClass={singleClass}
+                    key={singleClass.slug}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
         </div>
-        <div className="w-full md:w-4/12">
-          {!isLoading && (
-            <div className="w-full mt-4">
-              {classes?.map((singleClass, index) => (
-                <ClassCard
-                refetch={mutate}
-                setVideoTitle={setVideoTitle}
-                  currVideoSrc={videoSrc}
-                  setVideoSrc={setVideoSrc}
-                  classNo={index + 1}
-                  singleClass={singleClass}
-                  key={singleClass.slug}
-                />
-              ))}
-            </div>
-          )}
-        </div>
-          {classes?.length === 0 && (
-            <div className="h-full absolute top-1/2">
-              <p className="text-xl text-zinc-400">No Classes</p>
-            </div>
-          )}
-      </div>
       </IsAuthorized>
-
+      {classes?.length === 0 && (
+        <div className="h-full absolute top-1/2">
+          <p className="text-xl text-zinc-400">No Classes</p>
+        </div>
+      )}
     </main>
   );
 }

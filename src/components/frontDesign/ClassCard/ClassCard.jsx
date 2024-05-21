@@ -10,7 +10,7 @@ const ClassCard = ({
   setVideoSrc,
   currVideoSrc,
   setVideoTitle,
-  refetch
+  refetch,
 }) => {
   const [selectedVideo, setSelectedVideo] = useState(false);
 
@@ -35,9 +35,12 @@ const ClassCard = ({
           selectedVideo ? "border border-white" : ""
         }  gap-3 justify-center items-center `}
       >
-        <div onClick={handleClick}>
-          <div className="flex cursor-pointer items-center justify-between  bg-base-100 shadow-xl">
-            <figure className=" ">
+        <div
+          onClick={handleClick}
+          className="flex px-2 justify-between gap-2 cursor-pointer items-center w-full bg-base-100 shadow-xl"
+        >
+          <div className="w-3/12">
+            <figure>
               <Image
                 className="rounded"
                 src={singleClass.thumbnail}
@@ -46,22 +49,21 @@ const ClassCard = ({
                 height={100}
               />
             </figure>
-            <div className="p-4 ">
-              <h2 className="card-title text-white my-2">
-                {singleClass.title}
-              </h2>
-              <div className="flex justify-between text-zinc-400">
-                <p>class - {classNo}</p>
-                <p className="text-end">{singleClass.uploadDate}</p>
-              </div>
-              {/* <div className="flex gap-1 mt-2">
+          </div>
+          <div className="py-4  w-9/12">
+            <h2 className="card-title text-white my-2">{singleClass.title}</h2>
+            <div className="flex justify-between text-zinc-400">
+              <p>class - {classNo}</p>
+              <p className="text-end">{singleClass.uploadDate}</p>
+            </div>
+            {/* <div className="flex gap-1 mt-2">
                         <div className="badge badge-outline text-xs">weapon-series</div>
                         <div className="badge badge-outline text-xs">পরিমাণগত রসায়ন</div>
                     </div> */}
-            </div>
           </div>
         </div>
-          <EditClass data={singleClass} refetch={refetch} />
+
+        <EditClass data={singleClass} refetch={refetch} />
       </div>
     </>
   );

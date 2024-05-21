@@ -6,6 +6,7 @@ import { BiEdit, BiPlus, BiTrash } from "react-icons/bi";
 import { PlusOutlined } from "@ant-design/icons";
 import { toast } from "react-toastify";
 import IsAdmin from "@/components/common/IsAdmin";
+import Swal from "sweetalert2";
 
 const EditClass = ({ refetch, data }) => {
   const monthName = [
@@ -61,7 +62,6 @@ const EditClass = ({ refetch, data }) => {
     setFileList(newFileList);
   };
 
-
   // Upload button
   const uploadButton = (
     <button
@@ -95,52 +95,52 @@ const EditClass = ({ refetch, data }) => {
 
   // Submitting all Data
   const handleSubmit = async () => {
-    console.log(classes);
-
     try {
-      const imgData = new FormData();
-      imgData.append("image", fileList[0].originFileObj);
+      let imageUrl = classes.thumbnail;
 
-      const response = await fetch(
-        "https://api.imgbb.com/1/upload?key=aeda9807e6a4dd4f692343e011fdc790",
-        {
-          method: "POST",
-          body: imgData,
+      if (fileList.length > 0 && fileList[0].originFileObj) {
+        const imgData = new FormData();
+        imgData.append("image", fileList[0].originFileObj);
+
+        const response = await fetch(
+          "https://api.imgbb.com/1/upload?key=aeda9807e6a4dd4f692343e011fdc790",
+          {
+            method: "POST",
+            body: imgData,
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          imageUrl = data.data.url;
+        } else {
+          throw new Error("Image upload failed");
         }
-      );
+      }
 
-      console.log(response);
+      const updatedClass = { ...classes, thumbnail: imageUrl };
 
-      if (response.ok) {
-        const data = await response.json();
-        const imageUrl = data.data.url;
+      const result = await fetch(`/api/classes?id=${classes._id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedClass),
+      });
 
-        classes.thumbnail = imageUrl;
+      const resultData = await result.json();
 
-        await fetch(`/api/classes?id=${classes._id}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(classes),
-        })
-          .then((res) => res.json())
-          .then((data) => {
+      refetch();
+      closeModal();
 
-            console.log(data);
-
-            refetch();
-            closeModal();
-            if (data.success) {
-              toast.success(data.message);
-            } else {
-              toast.error(data.message);
-            }
-          });
+      if (resultData.success) {
+        toast.success(resultData.message);
+      } else {
+        toast.error(resultData.message);
       }
     } catch (error) {
       toast.error("Something went wrong!");
-      console.log("Error uploading image: ", error);
+      console.error("Error uploading image: ", error);
     }
   };
 
@@ -169,33 +169,44 @@ const EditClass = ({ refetch, data }) => {
     },
   };
 
-
   const handleDeleteItem = async () => {
-    try {
-      const result = await fetch(`/api/classes?id=${classes._id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      const resultData = await result.json();
-
-      if (resultData.success) {
-        refetch();
-        toast.success(resultData.message);
-      } else {
-        toast.error(resultData.message);
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        try {
+          fetch(`/api/classes?id=${classes._id}`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+            .then((res) => res.json())
+            .then((resulData) => {
+              if (resultData.success) {
+                refetch();
+                toast.success(resultData.message);
+              } else {
+                toast.error(resultData.message);
+              }
+            });
+        } catch (error) {
+          toast.error("Something went wrong!");
+        }
       }
-    } catch (error) {
-      toast.error("Something went wrong!");
-    }
+    });
   };
 
   return (
-    <div className="pb-4" >
+    <div className="pb-4">
       <div className="flex justify-center ">
-      <IsAdmin>
+        <IsAdmin>
           <div className="flex gap-4 justify-center items-center">
             <button
               onClick={openModal}
@@ -219,82 +230,84 @@ const EditClass = ({ refetch, data }) => {
           onRequestClose={closeModal}
           style={customStyles}
         >
-        <div className="z-50">
-        <h2 className="text-xl  mb-4 text-white text-center">Update Class</h2>
-          <form className="space-y-4 flex flex-col items-center justify-center">
-            <div className="">
-              {/* Upload Thumbnail */}
-              <Upload
-                listType="picture-card"
-                fileList={fileList}
-                onPreview={handlePreview}
-                onChange={handleChange}
-                className="text-white z-50"
-              >
-                {fileList.length == 1 ? null : uploadButton}
-              </Upload>
+          <div className="z-50">
+            <h2 className="text-xl  mb-4 text-white text-center">
+              Update Class
+            </h2>
+            <form className="space-y-4 flex flex-col items-center justify-center">
+              <div className="">
+                {/* Upload Thumbnail */}
+                <Upload
+                  listType="picture-card"
+                  fileList={fileList}
+                  onPreview={handlePreview}
+                  onChange={handleChange}
+                  className="text-white z-50"
+                >
+                  {fileList.length == 1 ? null : uploadButton}
+                </Upload>
 
-              {/* Preivew Thumbnail Start */}
-              {previewImage && (
-                <Image
-                  alt="image"
-                  wrapperStyle={{
-                    display: "none",
-                  }}
-                  preview={{
-                    visible: previewOpen,
-                    onVisibleChange: (visible) => setPreviewOpen(visible),
-                    afterOpenChange: (visible) =>
-                      !visible && setPreviewImage(""),
-                  }}
-                  src={previewImage}
+                {/* Preivew Thumbnail Start */}
+                {previewImage && (
+                  <Image
+                    alt="image"
+                    wrapperStyle={{
+                      display: "none",
+                    }}
+                    preview={{
+                      visible: previewOpen,
+                      onVisibleChange: (visible) => setPreviewOpen(visible),
+                      afterOpenChange: (visible) =>
+                        !visible && setPreviewImage(""),
+                    }}
+                    src={previewImage}
+                  />
+                )}
+                {/* Preivew Thumbnail  End */}
+              </div>
+
+              <div className="flex flex-col gap-4">
+                <input
+                  className="bg-white px-4 py-2 w-[40vw] rounded-md text-black placeholder:text-zinc-500"
+                  onChange={handleInputChange}
+                  name="title"
+                  placeholder="Enter class title"
+                  defaultValue={classes.title}
                 />
-              )}
-              {/* Preivew Thumbnail  End */}
-            </div>
 
-            <div className="flex flex-col gap-4">
-              <input
-                className="bg-white px-4 py-2 w-[40vw] rounded-md text-black placeholder:text-zinc-500"
-                onChange={handleInputChange}
-                name="title"
-                placeholder="Enter class title"
-                defaultValue={classes.title}
-              />
-
-              <input
-                className="bg-white px-4 py-2 w-[40vw] rounded-md text-black placeholder:text-zinc-500"
-                onChange={handleInputChange}
-                name="video"
-                placeholder="Enter video link"
-                defaultValue={classes.video}
-              />
-              <input
-                className="bg-white px-4 py-2 w-[40vw] rounded-md text-black placeholder:text-zinc-500"
-                onChange={handleInputChange}
-                name="material"
-                defaultValue={classes.material}
-                placeholder="Enter material link"
-              />
+                <input
+                  className="bg-white px-4 py-2 w-[40vw] rounded-md text-black placeholder:text-zinc-500"
+                  onChange={handleInputChange}
+                  name="video"
+                  placeholder="Enter video link"
+                  defaultValue={classes.video}
+                />
+                <input
+                  className="bg-white px-4 py-2 w-[40vw] rounded-md text-black placeholder:text-zinc-500"
+                  onChange={handleInputChange}
+                  name="material"
+                  defaultValue={classes.material}
+                  placeholder="Enter material link"
+                />
+              </div>
+            </form>
+            <div className="flex gap-2 justify-end mt-4">
+              <Button
+                size="large"
+                className="bg-red-600 text-white border-none"
+                onClick={closeModal}
+              >
+                Close
+              </Button>
+              <Button
+                size="large"
+                className="bg-green-400 text-white border-none"
+                onClick={handleSubmit}
+              >
+                Update
+              </Button>
             </div>
-          </form>
-          <div className="flex gap-2 justify-end mt-4">
-            <Button
-              size="large"
-              className="bg-red-600 text-white border-none"
-              onClick={closeModal}
-            >
-              Close
-            </Button>
-            <Button
-              size="large"
-              className="bg-green-400 text-white border-none"
-              onClick={handleSubmit}
-            >
-              Update
-            </Button>
           </div>
-        </div>
         </Modal>
       </div>
     </div>
