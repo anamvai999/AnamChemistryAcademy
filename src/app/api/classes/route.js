@@ -59,11 +59,19 @@ export async function POST(req) {
 // Patch route
 export async function PATCH(req) {
   try {
-    await connectMongodb();
     const id = req.nextUrl.searchParams.get("id");
+
+    console.log({id});
+
+    
+    await connectMongodb();
+
     const data = await req.json();
 
     const result = await classModel.updateOne({ _id: id }, { $set: data });
+
+
+    console.log({result});
 
     return NextResponse.json({
       success: true,
