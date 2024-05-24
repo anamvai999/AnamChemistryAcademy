@@ -53,6 +53,12 @@ const NavBar = () => {
             <div className="p-5 w-full flex justify-around ">
                 <div>
                     <p>Logo</p>
+                    {/*  <Image
+                        alt="logo"
+                        src={"https://i.ibb.co/Jd7VzYD/image.png"}
+                        width={200}
+                        height={200}
+                    /> */}
                 </div>
                 <div className="hidden sm:flex gap-5  ">
                     <Link href={'/'} className="flex items-center space-x-2 hover:text-blue-500">
@@ -101,8 +107,8 @@ const NavBar = () => {
                                     className="mt-28 z-[1] p-2 shadow menu menu-sm dropdown-content space-y-3 bg-base-100 rounded-box w-52"
                                 >
                                     <IsAdmin>
-                                        
-                                    <li className="text-white"> <Link href="/manage/members"><BiUser/> Members</Link></li>
+
+                                        <li className="text-white"> <Link href="/manage/members"><BiUser /> Members</Link></li>
                                     </IsAdmin>
                                     <button
                                         onClick={handleLogOut}
