@@ -1,15 +1,25 @@
 "use client";
 import { authContext } from "@/context/authContext/AuthProvider";
-import Image from "next/image";
-import Link from "next/link";
+import {Image} from "antd";
 import React, { useContext } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { Alert, Button, Space, message } from "antd";
 import { useRouter } from "next/navigation";
 import { updateProfile } from "firebase/auth";
 import auth from "../../../../firebase.config";
+import useSWR from "swr";
 
 const Page = () => {
+  const {
+    data: logo,
+    error,
+    isLoading,
+    mutate: refetch,
+  } = useSWR(`/api/logo`, fetcher);
+
+
+  console.log(logo);
+
   const { googleSignIn, emailSignUp, updateUser } = useContext(authContext);
   const [messageApi, contextHolder] = message.useMessage();
   const router = useRouter();
@@ -85,8 +95,10 @@ const Page = () => {
       <div className="border-white border w-1/2 p-10 rounded-md">
         {contextHolder}
         <div className="flex flex-col justify-center gap-8 ">
-          <div className="text-5xl text-center">Logo</div>
-          <h3 className="text-3xl text-center">Welcome back to Akhankha</h3>
+          <div className="text-5xl text-center">
+            <Image alt="" src={logo} preview={false} />
+          </div>
+          <h3 className="text-3xl text-center">Welcome back champ!</h3>
 
           <div className="relative md:w-1/2 w-full my-10 mx-auto">
             <button
@@ -103,6 +115,17 @@ const Page = () => {
       </div>
     </div>
   );
+};
+
+const fetcher = async (url) => {
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error("Failed to fetch the data");
+  }
+  const data = await res.json();
+  console.log(data);
+
+  return data.data[0].logo;
 };
 
 export default Page;
