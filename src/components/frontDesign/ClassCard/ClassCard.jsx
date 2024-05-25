@@ -28,11 +28,14 @@ const ClassCard = ({
     setVideoSrc(singleClass.video);
   };
 
+  console.log(singleClass);
+
   return (
     <>
       <div
-        className={`flex flex-col my-1 ${selectedVideo ? "border border-white" : ""
-          }  gap-3 justify-center items-center `}
+        className={`flex flex-col my-1 ${
+          selectedVideo ? "border border-white" : ""
+        }  gap-3 justify-center items-center `}
       >
         <div
           onClick={handleClick}
@@ -56,8 +59,30 @@ const ClassCard = ({
               <p className="text-end">{singleClass.uploadDate}</p>
             </div>
             <div className="flex gap-1 mt-2">
-              {singleClass.lectureSheet != undefined || null ? <Link href={singleClass?.material} className="badge badge-outline text-xs">Lecture Sheet</Link> : <></>}
-              {singleClass.practiceSheet != undefined || null ? <Link href={singleClass?.material2} className="badge badge-outline text-xs">Practice Sheet</Link> : <></>}
+              {(singleClass?.lectureSheet !== undefined ||
+                singleClass?.lectureSheet !== null) && (
+                <Link
+                  href={
+                    singleClass?.lectureSheet !== undefined &&
+                    singleClass.lectureSheet
+                  }
+                  className="badge badge-outline text-xs"
+                >
+                  Lecture Sheet
+                </Link>
+              )}
+              {(singleClass?.practiceSheet !== undefined ||
+                singleClass?.practiceSheet !== null) && (
+                <Link
+                  href={
+                    singleClass?.practiceSheet !== undefined &&
+                    singleClass.practiceSheet
+                  }
+                  className="badge badge-outline text-xs"
+                >
+                  Practice Sheet
+                </Link>
+              )}
             </div>
           </div>
         </div>

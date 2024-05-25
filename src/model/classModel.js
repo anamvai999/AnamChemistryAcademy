@@ -18,9 +18,11 @@ const classSchema = new Schema({
     required: true,
   },
 
-  material: {
+  lectureSheet: {
     type: String,
-    required: true,
+  },
+  practiceSheet: {
+    type: String,
   },
   chapterSlug: {
     type: String,
