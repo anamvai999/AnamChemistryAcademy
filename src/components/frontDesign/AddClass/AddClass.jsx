@@ -181,79 +181,85 @@ const AddClass = ({ refetch, chapterSlug }) => {
           onRequestClose={closeModal}
           style={customStyles}
         >
-        <div className="z-50">
-        <h2 className="text-xl  mb-4 text-white text-center">Upload Class</h2>
-          <form className="space-y-4 flex flex-col items-center justify-center">
-            <div className="">
-              {/* Upload Thumbnail */}
-              <Upload
-                listType="picture-card"
-                fileList={fileList}
-                onPreview={handlePreview}
-                onChange={handleChange}
-                className="text-white z-50"
-              >
-                {fileList.length == 1 ? null : uploadButton}
-              </Upload>
+          <div className="z-50">
+            <h2 className="text-xl  mb-4 text-white text-center">Upload Class</h2>
+            <form className="space-y-4 flex flex-col items-center justify-center">
+              <div className="">
+                {/* Upload Thumbnail */}
+                <Upload
+                  listType="picture-card"
+                  fileList={fileList}
+                  onPreview={handlePreview}
+                  onChange={handleChange}
+                  className="text-white z-50"
+                >
+                  {fileList.length == 1 ? null : uploadButton}
+                </Upload>
 
-              {/* Preivew Thumbnail Start */}
-              {previewImage && (
-                <Image
-                  alt="image"
-                  wrapperStyle={{
-                    display: "none",
-                  }}
-                  preview={{
-                    visible: previewOpen,
-                    onVisibleChange: (visible) => setPreviewOpen(visible),
-                    afterOpenChange: (visible) =>
-                      !visible && setPreviewImage(""),
-                  }}
-                  src={previewImage}
+                {/* Preivew Thumbnail Start */}
+                {previewImage && (
+                  <Image
+                    alt="image"
+                    wrapperStyle={{
+                      display: "none",
+                    }}
+                    preview={{
+                      visible: previewOpen,
+                      onVisibleChange: (visible) => setPreviewOpen(visible),
+                      afterOpenChange: (visible) =>
+                        !visible && setPreviewImage(""),
+                    }}
+                    src={previewImage}
+                  />
+                )}
+                {/* Preivew Thumbnail  End */}
+              </div>
+
+              <div className="flex flex-col gap-4">
+                <input
+                  className="bg-white px-4 py-2 w-[40vw] rounded-md text-black placeholder:text-zinc-500"
+                  onChange={handleInputChange}
+                  name="title"
+                  placeholder="Enter class title"
                 />
-              )}
-              {/* Preivew Thumbnail  End */}
-            </div>
 
-            <div className="flex flex-col gap-4">
-              <input
-                className="bg-white px-4 py-2 w-[40vw] rounded-md text-black placeholder:text-zinc-500"
-                onChange={handleInputChange}
-                name="title"
-                placeholder="Enter class title"
-              />
-
-              <input
-                className="bg-white px-4 py-2 w-[40vw] rounded-md text-black placeholder:text-zinc-500"
-                onChange={handleInputChange}
-                name="video"
-                placeholder="Enter video link"
-              />
-              <input
-                className="bg-white px-4 py-2 w-[40vw] rounded-md text-black placeholder:text-zinc-500"
-                onChange={handleInputChange}
-                name="material"
-                placeholder="Enter material link"
-              />
+                <input
+                  className="bg-white px-4 py-2 w-[40vw] rounded-md text-black placeholder:text-zinc-500"
+                  onChange={handleInputChange}
+                  name="video"
+                  placeholder="Enter video link"
+                />
+                <input
+                  className="bg-white px-4 py-2 w-[40vw] rounded-md text-black placeholder:text-zinc-500"
+                  onChange={handleInputChange}
+                  name="lectureSheet"
+                  placeholder="Enter lecture sheet link"
+                />
+                <input
+                  className="bg-white px-4 py-2 w-[40vw] rounded-md text-black placeholder:text-zinc-500"
+                  onChange={handleInputChange}
+                  name="practiceSheet"
+                  placeholder="Enter practice sheet link"
+                />
+              </div>
+            </form>
+            <div className="flex gap-2 justify-end mt-4">
+              <Button
+                size="large"
+                className="bg-red-600 text-white border-none"
+                onClick={closeModal}
+              >
+                Close
+              </Button>
+              <Button
+                size="large"
+                className="bg-green-400 text-white border-none"
+                onClick={handleSubmit}
+              >
+                Create
+              </Button>
             </div>
-          </form>
-          <div className="flex gap-2 justify-end mt-4">
-            <Button
-              size="large"
-              className="bg-red-600 text-white border-none"
-              onClick={closeModal}
-            >
-              Close
-            </Button>
-            <Button
-              size="large"
-              className="bg-green-400 text-white border-none"
-              onClick={handleSubmit}
-            >
-              Create
-            </Button>
           </div>
-        </div>
         </Modal>
       </div>
     </div>
