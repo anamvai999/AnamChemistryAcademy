@@ -282,50 +282,46 @@ const NavBar = () => {
             </Link>
           )}
 
-          {currentUser && (
-            <div className="dropdown dropdown-end">
-              <div
-                tabIndex={0}
-                role="button"
-                className="btn btn-ghost btn-circle avatar"
-              >
-                <div className="w-10 rounded-full">
-                  <Image
-                    alt="avater"
-                    src={
-                      currentUser.photoURL
-                        ? currentUser.photoURL
-                        : "/gameravatar.png"
-                    }
-                  />
+                    {currentUser && (
+                        <div className="dropdown dropdown-end">
+                            <div
+                                tabIndex={0}
+                                role="button"
+                                className="btn btn-ghost btn-circle avatar"
+                            >
+                                <div className="w-10 rounded-full">
+                                    <Image
+                                        alt="avater"
+                                        src={
+                                            currentUser.photoURL ? currentUser.photoURL : "/gameravatar.png"
+                                        }
+                                        width={500}
+                                        height={500}
+                                    />
+                                </div>
+                                <ul
+                                    tabIndex={0}
+                                    className="mt-28 z-[1] p-2 shadow menu menu-sm dropdown-content space-y-3 bg-base-100 rounded-box w-52"
+                                >
+                                    <IsAdmin>
+                                        
+                                    <li className="text-white"> <Link href="/manage/members"><BiUser/> Members</Link></li>
+                                    </IsAdmin>
+                                    <button
+                                        onClick={handleLogOut}
+                                        className="btn  text-white bg-secondary hover:bg-blue-800"
+                                    >
+                                        Logout
+                                    </button>
+                                </ul>
+                            </div>
+                        </div>
+                    )}
                 </div>
-                <ul
-                  tabIndex={0}
-                  className="mt-28 z-[1] p-2 shadow menu menu-sm dropdown-content space-y-3 bg-base-100 rounded-box w-52"
-                >
-                  <IsAdmin>
-                    <li className="text-white">
-                      {" "}
-                      <Link href="/manage/members">
-                        <BiUser /> Members
-                      </Link>
-                    </li>
-                  </IsAdmin>
-                  <button
-                    onClick={handleLogOut}
-                    className="btn  text-white bg-secondary hover:bg-blue-800"
-                  >
-                    Logout
-                  </button>
-                </ul>
-              </div>
-            </div>
-          )}
+            </div >
         </div>
-      </div>
-    </div>
-  );
-};
+    )
+}
 
 export default NavBar;
 
