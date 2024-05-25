@@ -62,14 +62,18 @@ const ClassCard = ({
                 singleClass?.lectureSheet !== null &&
                 singleClass?.lectureSheet !== "" && (
                   <div className="badge badge-outline text-xs">
-                    <a href={singleClass.lectureSheet}>Lecture Sheet</a>
+                    <a target="_blank" href={singleClass.lectureSheet}>
+                      Lecture Sheet
+                    </a>
                   </div>
                 )}
               {singleClass?.practiceSheet !== undefined &&
                 singleClass?.practiceSheet !== null &&
                 singleClass?.practiceSheet !== "" && (
                   <div className="badge badge-outline text-xs">
-                    <a href={singleClass.practiceSheet}>Practice Sheet</a>
+                    <a target="_blank" href={singleClass.practiceSheet}>
+                      Practice Sheet
+                    </a>
                   </div>
                 )}
             </div>
