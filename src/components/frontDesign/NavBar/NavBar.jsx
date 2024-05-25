@@ -22,7 +22,6 @@ const NavBar = () => {
         mutate: refetch,
     } = useSWR(`/api/logo`, fetcher);
 
-    console.log(logo);
 
 
     const [hideLogic, setHideLogic] = useState(true);
@@ -297,6 +296,7 @@ const NavBar = () => {
                                         }
                                         width={500}
                                         height={500}
+                                        preview={false}
                                     />
                                 </div>
                                 <ul

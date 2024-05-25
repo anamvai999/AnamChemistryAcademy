@@ -5,7 +5,6 @@ import React, { useEffect, useState } from "react";
 import { BiPlus } from "react-icons/bi";
 import { PlusOutlined } from "@ant-design/icons";
 import { toast } from "react-toastify";
-import zIndex from "@mui/material/styles/zIndex";
 
 const AddClass = ({ refetch, chapterSlug }) => {
   const monthName = [

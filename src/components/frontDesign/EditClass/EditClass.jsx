@@ -188,7 +188,7 @@ const EditClass = ({ refetch, data }) => {
             },
           })
             .then((res) => res.json())
-            .then((resulData) => {
+            .then((resultData) => {
               if (resultData.success) {
                 refetch();
                 toast.success(resultData.message);
@@ -285,9 +285,16 @@ const EditClass = ({ refetch, data }) => {
                 <input
                   className="bg-white px-4 py-2 w-[40vw] rounded-md text-black placeholder:text-zinc-500"
                   onChange={handleInputChange}
-                  name="material"
-                  defaultValue={classes.material}
-                  placeholder="Enter material link"
+                  name="lectureSheet"
+                  defaultValue={classes.lectureSheet}
+                  placeholder="Enter lecture sheet"
+                />
+                <input
+                  className="bg-white px-4 py-2 w-[40vw] rounded-md text-black placeholder:text-zinc-500"
+                  onChange={handleInputChange}
+                  name="practiceSheet"
+                  defaultValue={classes.practiceSheet}
+                  placeholder="Enter practice sheet"
                 />
               </div>
             </form>
