@@ -294,8 +294,6 @@ const NavBar = () => {
                                         src={
                                             currentUser.photoURL ? currentUser.photoURL : "/gameravatar.png"
                                         }
-                                        width={500}
-                                        height={500}
                                         preview={false}
                                     />
                                 </div>

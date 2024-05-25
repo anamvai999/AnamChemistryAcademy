@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import EditClass from "../EditClass/EditClass";
 
 const ClassCard = ({
@@ -59,30 +58,20 @@ const ClassCard = ({
               <p className="text-end">{singleClass.uploadDate}</p>
             </div>
             <div className="flex gap-1 mt-2">
-              {(singleClass?.lectureSheet !== undefined ||
-                singleClass?.lectureSheet !== null) && (
-                <Link
-                  href={
-                    singleClass?.lectureSheet !== undefined &&
-                    singleClass.lectureSheet
-                  }
-                  className="badge badge-outline text-xs"
-                >
-                  Lecture Sheet
-                </Link>
-              )}
-              {(singleClass?.practiceSheet !== undefined ||
-                singleClass?.practiceSheet !== null) && (
-                <Link
-                  href={
-                    singleClass?.practiceSheet !== undefined &&
-                    singleClass.practiceSheet
-                  }
-                  className="badge badge-outline text-xs"
-                >
-                  Practice Sheet
-                </Link>
-              )}
+              {singleClass?.lectureSheet !== undefined &&
+                singleClass?.lectureSheet !== null &&
+                singleClass?.lectureSheet !== "" && (
+                  <div className="badge badge-outline text-xs">
+                    <a href={singleClass.lectureSheet}>Lecture Sheet</a>
+                  </div>
+                )}
+              {singleClass?.practiceSheet !== undefined &&
+                singleClass?.practiceSheet !== null &&
+                singleClass?.practiceSheet !== "" && (
+                  <div className="badge badge-outline text-xs">
+                    <a href={singleClass.practiceSheet}>Practice Sheet</a>
+                  </div>
+                )}
             </div>
           </div>
         </div>
