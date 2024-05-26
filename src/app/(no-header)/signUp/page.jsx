@@ -94,13 +94,13 @@ const Page = () => {
     <div className="flex min-h-screen items-center justify-center">
       <div className="border-white border w-1/2 p-10 rounded-md">
         {contextHolder}
-        <div className="flex flex-col justify-center gap-8 ">
-          <div className="text-5xl text-center">
+        <div className="flex flex-col justify-center gap-2 ">
+          <div className="text-3xl text-center">
             <Image alt="" src={logo} preview={false} />
           </div>
           <h3 className="text-3xl text-center">Welcome back champ!</h3>
 
-          <div className="relative md:w-1/2 w-full my-10 mx-auto">
+          <div className="relative md:w-1/2 w-full my-6 mx-auto">
             <button
               onClick={() => handleGoogleSignIn()}
               className="flex hover:bg-orange-500 hover:text-white  w-full sm:w-2/3 mx-auto justify-center items-center gap-2 border-2"
