@@ -154,7 +154,7 @@ const Video = ({ videoSrc, videoTitle }) => {
           <ReactPlayer
             onTouchStart={handleTouch}
             ref={videoPlayerRef}
-            className="player   z-0"
+            className="player z-0"
             url={videoSrc}
             width="100%"
             height="100%"

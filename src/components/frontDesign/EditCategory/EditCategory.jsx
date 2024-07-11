@@ -77,7 +77,7 @@ const EditCategory = ({ refetch, id, data }) => {
         imgData.append("image", fileList[0].originFileObj);
 
         const response = await fetch(
-          "https://api.imgbb.com/1/upload?key=aeda9807e6a4dd4f692343e011fdc790",
+          `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_KEY}`,
           {
             method: "POST",
             body: imgData,
