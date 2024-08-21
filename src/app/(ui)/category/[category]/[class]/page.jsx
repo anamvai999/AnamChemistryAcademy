@@ -40,9 +40,11 @@ export default function Page() {
       setVideoSrc(classes[0].video);
     }
   }, [classes, isLoading]);
-
+  const preventRightClick = (e) => {
+    e.preventDefault();
+  };
   return (
-    <main className="flex min-h-screen flex-col items-center  ">
+    <main onContextMenu={preventRightClick} className="flex min-h-screen flex-col items-center  ">
       <ToastContainer />
       <div className="flex justify-end mb-4">
         <IsAdmin>

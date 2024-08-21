@@ -3,19 +3,31 @@
 @tailwind utilities;
 
 
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+
 .video-container .ytp-share-button-visible {
   display: none !important;
 }
-.ytp-youtube-button .ytp-button .yt-uix-sessionlink{
+
+.ytp-youtube-button .ytp-button .yt-uix-sessionlink {
   display: none !important;
   background-color: brown !important;
   height: 1px;
 }
-.ytp-share-icon{
+
+.ytp-share-icon {
   display: none !important;
+}
+
+@media print {
+
+  html,
+  body {
+    /* Hide the whole page */
+    display: none;
+  }
 }

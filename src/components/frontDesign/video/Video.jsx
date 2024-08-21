@@ -193,7 +193,7 @@ const Video = ({ videoSrc, videoTitle }) => {
           />
         </div>
       </Container>
-      
+
     </div>
   );
 };
