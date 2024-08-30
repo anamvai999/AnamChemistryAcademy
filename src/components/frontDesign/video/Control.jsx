@@ -1,32 +1,9 @@
-import { Button, Tooltip, Popover, Grid } from "@mui/material";
-import {
-  FastForward,
-  FastRewind,
-  Pause,
-  PlayArrow,
-  SkipNext,
-  VolumeOff,
-  VolumeUp,
-} from "@mui/icons-material";
-import "./Control.css";
+import React from "react";
+import { Pause, PlayArrow, VolumeOff, VolumeUp } from "@mui/icons-material";
 import Slider from "@mui/material/Slider";
-import { styled } from "@mui/material/styles";
 import { BiExpand } from "react-icons/bi";
-
-const useStyles = styled("div")({
-  volumeSlider: {
-    width: "100px",
-    color: "#9556CC",
-  },
-
-  bottomIcons: {
-    color: "#999",
-    padding: "12px 8px",
-    "&:hover": {
-      color: "#fff",
-    },
-  },
-});
+import "./Control.css";
+import { styled } from "@mui/material/styles";
 
 const PrettoSlider = styled(Slider)({
   root: {
@@ -80,36 +57,28 @@ const Control = ({
   onMouseSeekDown,
   controlRef,
   handleFullScreen,
-  videoTitle
+  videoTitle,
+  onPlaybackRateChange,
+  playbackRate,
 }) => {
-  const classes = useStyles;
-
   return (
     <div className="control_Container" ref={controlRef}>
       <div className="top_container">
         <h2 className="text-white mt-2">{videoTitle}</h2>
       </div>
       <div className="mid__container">
-        {/* <div className="icon__btn" onDoubleClick={onRewind}>
-                    <FastRewind fontSize="medium" />
-                </div> */}
-
         <div className="icon__btn" onClick={onPlayPause}>
           {playing ? (
             <Pause fontSize="large" />
           ) : (
             <PlayArrow fontSize="large" />
-          )}{" "}
+          )}
         </div>
-
-        {/* <div className="icon__btn">
-                    <FastForward fontSize="medium" onDoubleClick={onForward} />
-                </div> */}
       </div>
       <div className="bottom__container">
         <div className="slider__container">
           <PrettoSlider
-          className="text-white "
+            className="text-white"
             min={0}
             max={100}
             value={played * 100}
@@ -119,22 +88,9 @@ const Control = ({
           />
         </div>
 
-        {/* botom controls */}
         <div className="flex w-full items-center justify-between">
           <div className="control__box w-6/12 flex justify-center">
             <div className="inner__controls w-full">
-              {/* <div className="icon__btn" onClick={onPlayPause}>
-                            {playing ? (
-                                <Pause fontSize="medium" />
-                            ) : (
-                                <PlayArrow fontSize="medium" />
-                            )}{" "}
-                        </div> */}
-
-              {/* <div className="icon__btn">
-                            <SkipNext fontSize="medium" />
-                        </div> */}
-
               <div className="icon__btn text-white" onClick={onMute}>
                 {mute ? (
                   <VolumeOff fontSize="medium" />
@@ -142,9 +98,8 @@ const Control = ({
                   <VolumeUp fontSize="medium" />
                 )}
               </div>
-
               <Slider
-                className={`${classes.volumeSlider} w-full text-white`}
+                className="w-full text-white"
                 onChange={onVolumeChangeHandler}
                 value={volume * 100}
                 onChangeCommitted={onVolumeSeekUp}
@@ -156,13 +111,22 @@ const Control = ({
               {currentTime} : {duration}
             </span>
           </div>
-          <div className="w-2/12 flex justify-center items-center"> 
-            <button
-              className="white text-2xl"
-              onClick={handleFullScreen}
-            >
-              <BiExpand />{" "}
+          <div className="w-2/12 flex justify-center items-center">
+            <button className="white text-2xl" onClick={handleFullScreen}>
+              <BiExpand />
             </button>
+          </div>
+          <div className="w-3/12 flex justify-center items-center">
+            <select
+              value={playbackRate}
+              onChange={(e) => onPlaybackRateChange(e.target.value)}  // Pass value directly
+              className="playback-rate-dropdown"
+            >
+              <option value="0.5">0.5x</option>
+              <option value="1">1x</option>
+              <option value="1.5">1.5x</option>
+              <option value="2">2x</option>
+            </select>
           </div>
         </div>
       </div>

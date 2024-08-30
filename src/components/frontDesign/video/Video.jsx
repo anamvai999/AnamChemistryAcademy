@@ -142,6 +142,9 @@ const Video = ({ videoSrc, videoTitle }) => {
 
   };
 
+  const handlePlaybackRateChange = (newPlaybackRate) => {
+    setVideoState({ ...videoState, playbackRate: parseFloat(newPlaybackRate) });
+  };
   return (
     <div className="video_container" onTouchStart={handleTouch}>
       <Container maxWidth="md" justify="center">
@@ -161,6 +164,7 @@ const Video = ({ videoSrc, videoTitle }) => {
             playing={playing}
             volume={volume}
             muted={muted}
+            playbackRate={playbackRate}
             onProgress={progressHandler}
             onBuffer={bufferStartHandler}
             onBufferEnd={bufferEndHandler}
@@ -184,12 +188,13 @@ const Video = ({ videoSrc, videoTitle }) => {
             onVolumeSeekUp={volumeSeekUpHandler}
             mute={muted}
             onMute={muteHandler}
-            playRate={playbackRate}
+            playbackRate={playbackRate}
             duration={formatDuration}
             currentTime={formatCurrentTime}
             onMouseSeekDown={onSeekMouseDownHandler}
             handleFullScreen={handleFullScreen}
             videoTitle={videoTitle}
+            onPlaybackRateChange={handlePlaybackRateChange}
           />
         </div>
       </Container>
