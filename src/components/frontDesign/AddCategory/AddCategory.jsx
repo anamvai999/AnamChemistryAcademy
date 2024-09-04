@@ -99,7 +99,7 @@ const AddCategory = ({ refetch }) => {
           });
       }
     } catch (error) {
-      toast.error("Something went wrong!");
+      toast.error("Something went wrong!!");
       console.log("Error uploading image: ", error);
     }
   };

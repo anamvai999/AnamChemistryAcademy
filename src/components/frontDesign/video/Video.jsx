@@ -1,17 +1,12 @@
-"use client";
-
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import "./Video.css";
-import dynamic from "next/dynamic";
-import Control from "./Control";
 import { Container } from "@mui/material";
 import { formatTime } from "./Format";
 import ReactPlayer from "react-player";
+import Control from "./Control";
 
 let count = 0;
 const Video = ({ videoSrc, videoTitle }) => {
-  /*     const ReactPlayer = dynamic(() => import("react-player/youtube"), { ssr: false });
-   */
   const videoPlayerRef = useRef(null);
   const controlRef = useRef(null);
   const playerContainerRef = useRef(null);
@@ -26,7 +21,6 @@ const Video = ({ videoSrc, videoTitle }) => {
     buffer: true,
   });
 
-  //Destructuring the properties from the videoState
   const { playing, muted, volume, playbackRate, played, seeking, buffer } =
     videoState;
 
@@ -41,25 +35,20 @@ const Video = ({ videoSrc, videoTitle }) => {
   const formatDuration = formatTime(duration);
 
   const playPauseHandler = () => {
-    //plays and pause the video (toggling)
     setVideoState({ ...videoState, playing: !videoState.playing });
   };
 
   const rewindHandler = () => {
-    //Rewinds the video player reducing 5
-    videoPlayerRef.current.seekTo(videoPlayerRef.current.getCurrentTime() - 5);
+    videoPlayerRef.current.seekTo(videoPlayerRef.current.getCurrentTime() - 10);
   };
 
   const handleFastFoward = () => {
-    //FastFowards the video player by adding 10
     videoPlayerRef.current.seekTo(videoPlayerRef.current.getCurrentTime() + 10);
   };
 
-  //console.log("========", (controlRef.current.style.visibility = "false"));
   const progressHandler = (state) => {
     if (count > 3) {
-      console.log("close");
-      controlRef.current.style.visibility = "hidden"; // toggling player control container
+      controlRef.current.style.visibility = "hidden";
     } else if (controlRef.current.style.visibility === "visible") {
       count += 1;
     }
@@ -75,34 +64,29 @@ const Video = ({ videoSrc, videoTitle }) => {
   };
 
   const seekMouseUpHandler = (e, value) => {
-    console.log(value);
-
     setVideoState({ ...videoState, seeking: false });
     videoPlayerRef.current.seekTo(value / 100);
   };
 
   const volumeChangeHandler = (e, value) => {
     const newVolume = parseFloat(value) / 100;
-
     setVideoState({
       ...videoState,
       volume: newVolume,
-      muted: Number(newVolume) === 0 ? true : false, // volume === 0 then muted
+      muted: Number(newVolume) === 0,
     });
   };
 
   const volumeSeekUpHandler = (e, value) => {
     const newVolume = parseFloat(value) / 100;
-
     setVideoState({
       ...videoState,
       volume: newVolume,
-      muted: newVolume === 0 ? true : false,
+      muted: newVolume === 0,
     });
   };
 
   const muteHandler = () => {
-    //Mutes the video player
     setVideoState({ ...videoState, muted: !videoState.muted });
   };
 
@@ -116,12 +100,10 @@ const Video = ({ videoSrc, videoTitle }) => {
   };
 
   const bufferStartHandler = () => {
-    console.log("Bufering.......");
     setVideoState({ ...videoState, buffer: true });
   };
 
   const bufferEndHandler = () => {
-    console.log("buffering stoped ,,,,,,play");
     setVideoState({ ...videoState, buffer: false });
   };
 
@@ -138,19 +120,18 @@ const Video = ({ videoSrc, videoTitle }) => {
   const handleTouch = () => {
     controlRef.current.style.visibility = "visible";
     count = 0;
-    // alert("bang bang");
-
   };
 
   const handlePlaybackRateChange = (newPlaybackRate) => {
     setVideoState({ ...videoState, playbackRate: parseFloat(newPlaybackRate) });
   };
+
   return (
     <div className="video_container" onTouchStart={handleTouch}>
       <Container maxWidth="md" justify="center">
         <div
           ref={playerContainerRef}
-          className="player__wrapper  w-full  min-h-[40vh]"
+          className="player__wrapper w-full min-h-[40vh]"
           onTouchStart={handleTouch}
           onMouseMove={mouseMoveHandler}
         >
@@ -170,7 +151,10 @@ const Video = ({ videoSrc, videoTitle }) => {
             onBufferEnd={bufferEndHandler}
           />
 
-          <div onTouchStart={handleTouch} className='opacity-0 absolute top-0 left-0 w-full h-full bg-red-400'></div>
+          <div
+            onTouchStart={handleTouch}
+            className="opacity-0 absolute top-0 left-0 w-full h-full bg-red-400"
+          ></div>
 
           {buffer && <p>Loading</p>}
 
@@ -198,7 +182,6 @@ const Video = ({ videoSrc, videoTitle }) => {
           />
         </div>
       </Container>
-
     </div>
   );
 };

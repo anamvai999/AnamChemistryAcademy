@@ -67,12 +67,18 @@ const Control = ({
         <h2 className="text-white mt-2">{videoTitle}</h2>
       </div>
       <div className="mid__container">
+        <div className="icon__btn" onClick={onRewind}>
+          <span className="cursor-pointer">⏪</span>
+        </div>
         <div className="icon__btn" onClick={onPlayPause}>
           {playing ? (
             <Pause fontSize="large" />
           ) : (
             <PlayArrow fontSize="large" />
           )}
+        </div>
+        <div className="icon__btn" onClick={onForward}>
+          <span className="cursor-pointer">⏩</span>
         </div>
       </div>
       <div className="bottom__container">
