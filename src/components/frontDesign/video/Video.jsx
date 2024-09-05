@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import "./Video.css";
 import { Container } from "@mui/material";
 import { formatTime } from "./Format";
@@ -19,9 +19,12 @@ const Video = ({ videoSrc, videoTitle }) => {
     played: 0,
     seeking: false,
     buffer: true,
+    idmDetected: false, // Add state to track if IDM is detected
   });
 
-  const { playing, muted, volume, playbackRate, played, seeking, buffer } =
+  const [realVideoLoaded, setRealVideoLoaded] = useState(false); // Track if real video is loaded
+
+  const { playing, muted, volume, playbackRate, played, seeking, buffer, idmDetected } =
     videoState;
 
   const currentTime = videoPlayerRef.current
@@ -33,6 +36,37 @@ const Video = ({ videoSrc, videoTitle }) => {
 
   const formatCurrentTime = formatTime(currentTime);
   const formatDuration = formatTime(duration);
+
+  // Fake video source for bait-and-switch mechanism
+  const fakeVideoSrc = "dummy-video.mp4"; 
+
+  // Function to detect IDM (checks for idm_id attribute)
+  const checkForIDM = () => {
+    const videoTag = document.getElementsByTagName('video')[0];
+    if (videoTag && videoTag.hasAttribute('__idm_id__')) {
+      setVideoState({ ...videoState, idmDetected: true });
+    }
+  };
+
+  useEffect(() => {
+    // Check for IDM presence every second
+    const idmCheckInterval = setInterval(() => {
+      checkForIDM();
+    }, 1000);
+
+    return () => clearInterval(idmCheckInterval);
+  }, []);
+
+  // Bait-and-switch logic: Load real video after 5 seconds if IDM is not detected
+  useEffect(() => {
+    if (!idmDetected) {
+      const timer = setTimeout(() => {
+        setRealVideoLoaded(true); // Load real video after 5 seconds
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [idmDetected]);
 
   const playPauseHandler = () => {
     setVideoState({ ...videoState, playing: !videoState.playing });
@@ -135,21 +169,29 @@ const Video = ({ videoSrc, videoTitle }) => {
           onTouchStart={handleTouch}
           onMouseMove={mouseMoveHandler}
         >
-          <ReactPlayer
-            onTouchStart={handleTouch}
-            ref={videoPlayerRef}
-            className="player z-0"
-            url={videoSrc}
-            width="100%"
-            height="100%"
-            playing={playing}
-            volume={volume}
-            muted={muted}
-            playbackRate={playbackRate}
-            onProgress={progressHandler}
-            onBuffer={bufferStartHandler}
-            onBufferEnd={bufferEndHandler}
-          />
+          {idmDetected ? (
+            <div>
+              <h1>IDM Detected</h1>
+              <p>Please disable IDM and reload the page to view this content.</p>
+              <button onClick={() => window.location.reload()}>Reload</button>
+            </div>
+          ) : (
+            <ReactPlayer
+              onTouchStart={handleTouch}
+              ref={videoPlayerRef}
+              className="player z-0"
+              url={realVideoLoaded ? `${videoSrc}` : fakeVideoSrc}
+              width="100%"
+              height="100%"
+              playing={playing}
+              volume={volume}
+              muted={muted}
+              playbackRate={playbackRate}
+              onProgress={progressHandler}
+              onBuffer={bufferStartHandler}
+              onBufferEnd={bufferEndHandler}
+            />
+          )}
 
           <div
             onTouchStart={handleTouch}

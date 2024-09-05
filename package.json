@@ -11,6 +11,7 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@gumlet/react-drm-player": "^1.0.2",
     "@mui/icons-material": "^5.15.15",
     "@mui/lab": "^5.0.0-alpha.170",
     "@mui/material": "^5.15.15",
@@ -29,7 +30,7 @@
     "react-toastify": "^10.0.5",
     "react-youtube": "^10.1.0",
     "screenfull": "^6.0.2",
-    "sweetalert2": "^11.11.0",
+    "sweetalert2": "^11.6.13",
     "swr": "^2.2.5",
     "video-react": "^0.16.0"
   },
