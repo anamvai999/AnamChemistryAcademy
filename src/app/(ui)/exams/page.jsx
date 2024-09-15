@@ -8,6 +8,8 @@ import Link from "next/link";
 
 import Image from "next/image";
 import { BiEdit, BiTrash } from "react-icons/bi";
+import { toast } from "react-toastify";
+import EditExam from "@/components/frontDesign/EditExam/EditExam";
 
 const Page = () => {
   const {
@@ -27,6 +29,7 @@ const Page = () => {
     );
   }
 
+
   return (
     <main className=" ">
       <IsAdmin>
@@ -45,17 +48,12 @@ const Page = () => {
               </Link>
               <IsAdmin>
                 <button
-                  onClick={() => {}}
+                  onClick={() => { }}
                   className="flex items-center justify-center gap-2 rounded px-3 py-2 bg-green-500 text-white"
                 >
                   <BiEdit /> Edit
                 </button>
-                <button
-                  onClick={()=>{}}
-                  className="flex items-center justify-center gap-2 rounded px-3 py-2 bg-red-500 text-white"
-                >
-                  <BiTrash /> Remove
-                </button>
+                <EditExam refetch={mutate} data={exam} />
               </IsAdmin>
             </div>
           ))}

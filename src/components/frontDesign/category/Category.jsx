@@ -23,7 +23,7 @@ const Category = ({ data, refetch }) => {
           <h2 class="card-title">{data?.title}</h2>
         </div>
       </Link>
-     <EditCategory refetch={refetch} data={data}/>
+      <EditCategory refetch={refetch} data={data} />
     </div>
   );
 };

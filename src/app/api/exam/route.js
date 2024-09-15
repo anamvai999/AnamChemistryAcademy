@@ -11,12 +11,12 @@ export async function GET(req) {
 
     let data = [];
 
-    if(examSlug !== null && examSlug?.length){
-      data = await ExamModel.findOne({_id: examSlug});
-    }else{
-       data = await ExamModel.find({ examSlug });
+    if (examSlug !== null && examSlug?.length) {
+      data = await ExamModel.findOne({ _id: examSlug });
+    } else {
+      data = await ExamModel.find({ examSlug });
     }
-    
+
 
     return NextResponse.json({
       success: true,
@@ -36,19 +36,15 @@ export async function POST(req) {
   try {
     await connectMongodb();
     const data = await req.json();
+    const result = await ExamModel.create(data);
+    if (result) {
+      return NextResponse.json({
+        success: true,
+        message: "Exam created",
+        data,
+      });
+    }
 
-
-    
-      const result = await ExamModel.create(data);
-
-      if (result) {
-        return NextResponse.json({
-          success: true,
-          message: "Exam created",
-          data,
-        });
-      }
-    
 
     return NextResponse.json({
       success: false,
@@ -76,7 +72,7 @@ export async function PATCH(req) {
     const result = await ExamModel.updateOne({ _id: id }, { $set: data });
 
 
-    console.log({result});
+    console.log({ result });
 
     return NextResponse.json({
       success: true,

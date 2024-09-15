@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "antd";
 import Modal from "react-modal";
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import { BiPlus } from "react-icons/bi";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -114,8 +114,6 @@ const AddExam = ({ refetch, examSlug }) => {
                   name="examLink"
                   placeholder="Enter exam link"
                 />
-               
-              
               </div>
             </form>
             <div className="flex gap-2 justify-end mt-4">

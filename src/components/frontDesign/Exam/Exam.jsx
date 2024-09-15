@@ -9,8 +9,7 @@ const Exam = ({ _id, examTitle, examLink, createdAt }) => {
     <div className="flex gap-4 items-center justify-between w-full">
       <h2>{examTitle}</h2>
       <div className="flex gap-4 items-center">
-        <p>{formattedDate}</p>
-      
+        <p>{formattedDate}</p>     
       </div>
     </div>
   );
