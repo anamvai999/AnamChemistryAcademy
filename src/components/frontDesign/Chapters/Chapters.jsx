@@ -9,10 +9,10 @@ const Page = ({ chapter, refetch }) => {
 
   return (
     <div className="card pb-4 card-compact w-[80vw] md:w-60 bg-base-100 shadow-xl">
-      <Link href={`${url}/${chapter.slug}`}>
+      <Link href={`${url}/${chapter?.slug}`}>
         <figure className="h-40">
           <Image
-            src={chapter.thumbnail}
+            src={chapter?.thumbnail}
             alt="Title"
             width={500}
             height={500}

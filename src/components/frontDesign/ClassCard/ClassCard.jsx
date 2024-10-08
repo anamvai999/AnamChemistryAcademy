@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import EditClass from "../EditClass/EditClass";
 
 const ClassCard = ({
@@ -14,17 +13,17 @@ const ClassCard = ({
   const [selectedVideo, setSelectedVideo] = useState(false);
 
   useEffect(() => {
-    if (currVideoSrc === singleClass.video) {
+    if (currVideoSrc === singleClass?.video) {
       setSelectedVideo(true);
-      setVideoTitle(singleClass.title);
+      setVideoTitle(singleClass?.title);
     } else {
       setSelectedVideo(false);
     }
   }, [singleClass, currVideoSrc, setVideoTitle]);
 
   const handleClick = () => {
-    setVideoTitle(singleClass.title);
-    setVideoSrc(singleClass.video);
+    setVideoTitle(singleClass?.title);
+    setVideoSrc(singleClass?.video);
   };
 
   console.log(singleClass);
@@ -32,9 +31,8 @@ const ClassCard = ({
   return (
     <>
       <div
-        className={`flex flex-col my-1 ${
-          selectedVideo ? "border border-white" : ""
-        }  gap-3 justify-center items-center `}
+        className={`flex flex-col my-1 ${selectedVideo ? "border border-white" : ""
+          }  gap-3 justify-center items-center `}
       >
         <div
           onClick={handleClick}
@@ -44,25 +42,25 @@ const ClassCard = ({
             <figure>
               <Image
                 className="rounded"
-                src={singleClass.thumbnail}
-                alt={singleClass.title}
+                src={singleClass?.thumbnail}
+                alt={singleClass?.title}
                 width={100}
                 height={100}
               />
             </figure>
           </div>
           <div className="py-4  w-9/12">
-            <h2 className="card-title text-white my-2">{singleClass.title}</h2>
+            <h2 className="card-title text-white my-2">{singleClass?.title}</h2>
             <div className="flex justify-between text-zinc-400">
               <p>class - {classNo}</p>
-              <p className="text-end">{singleClass.uploadDate}</p>
+              <p className="text-end">{singleClass?.uploadDate}</p>
             </div>
             <div className="flex gap-1 mt-2">
               {singleClass?.lectureSheet !== undefined &&
                 singleClass?.lectureSheet !== null &&
                 singleClass?.lectureSheet !== "" && (
                   <div className="badge badge-outline text-xs">
-                    <a target="_blank" href={singleClass.lectureSheet}>
+                    <a target="_blank" href={singleClass?.lectureSheet}>
                       Lecture Sheet
                     </a>
                   </div>
@@ -71,7 +69,7 @@ const ClassCard = ({
                 singleClass?.practiceSheet !== null &&
                 singleClass?.practiceSheet !== "" && (
                   <div className="badge badge-outline text-xs">
-                    <a target="_blank" href={singleClass.practiceSheet}>
+                    <a target="_blank" href={singleClass?.practiceSheet}>
                       Practice Sheet
                     </a>
                   </div>

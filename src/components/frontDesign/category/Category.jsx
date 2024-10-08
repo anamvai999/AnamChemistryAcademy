@@ -13,7 +13,7 @@ const Category = ({ data, refetch }) => {
         <figure className="h-40">
           <Image
             src={`${data?.thumbnail}`}
-            alt={`${data.title} image`}
+            alt={`${data?.title} image`}
             width={500}
             height={500}
             class="transition-transform duration-300 transform hover:scale-105"

@@ -95,6 +95,7 @@ const AddCategory = ({ refetch }) => {
               toast.success(data.message);
             } else {
               toast.error(data.message);
+              console.log("jhamela koi");
             }
           });
       }
