@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Pause, PlayArrow, VolumeOff, VolumeUp } from "@mui/icons-material";
 import Slider from "@mui/material/Slider";
@@ -5,7 +6,39 @@ import { BiExpand } from "react-icons/bi";
 import "./Control.css";
 import { styled } from "@mui/material/styles";
 
-const PrettoSlider = styled(Slider)(/* Styles remain unchanged */);
+const PrettoSlider = styled(Slider)({
+  root: {
+    height: "20px",
+    color: "#9556CC",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  thumb: {
+    height: 20,
+    width: 20,
+    backgroundColor: "#9556CC",
+    border: "2px solid currentColor",
+    marginTop: -3,
+    marginLeft: -12,
+    "&:focus, &:hover, &$active": {
+      boxShadow: "inherit",
+    },
+  },
+  active: {},
+  valueLabel: {
+    left: "calc(-50% + 4px)",
+  },
+  track: {
+    height: 5,
+    borderRadius: 4,
+    width: "100%",
+  },
+  rail: {
+    height: 5,
+    borderRadius: 4,
+  },
+});
 
 const Control = ({
   onPlayPause,
@@ -29,7 +62,7 @@ const Control = ({
   onPlaybackRateChange,
   playbackRate,
   quality,
-  onQualityChange, // New prop for quality change
+  onQualityChange,
 }) => {
   return (
     <div className="control_Container" ref={controlRef}>
