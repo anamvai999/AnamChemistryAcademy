@@ -7,6 +7,7 @@ import ReactPlayer from "react-player";
 import Control from "./Control";
 
 let count = 0;
+
 const Video = ({ videoSrc, videoTitle }) => {
   const videoPlayerRef = useRef(null);
   const controlRef = useRef(null);
@@ -66,6 +67,43 @@ const Video = ({ videoSrc, videoTitle }) => {
       return () => clearTimeout(timer);
     }
   }, [idmDetected]);
+
+  // Keyboard controls
+  const handleKeyPress = (event) => {
+    switch (event.key) {
+      case ' ':
+        playPauseHandler();
+        break;
+      case 'ArrowLeft':
+        rewindHandler();
+        break;
+      case 'ArrowRight':
+        handleFastFoward();
+        break;
+      case 'ArrowUp':
+        volumeChangeHandler(null, Math.min(volume * 100 + 10, 100)); // Increase volume
+        break;
+      case 'ArrowDown':
+        volumeChangeHandler(null, Math.max(volume * 100 - 10, 0)); // Decrease volume
+        break;
+      case 'm':
+        muteHandler();
+        break;
+      case 'f':
+        handleFullScreen();
+        break;
+      default:
+        break;
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyPress);
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [videoState]);
+
   const playPauseHandler = () => {
     setVideoState({ ...videoState, playing: !videoState.playing });
   };
@@ -133,7 +171,9 @@ const Video = ({ videoSrc, videoTitle }) => {
         document.exitFullscreen();
       } else {
         playerContainerRef.current.requestFullscreen();
-      }}}
+      }
+    }
+  };
   const changeQuality = (newQuality) => {
     if (videoPlayerRef.current) {
       videoPlayerRef.current.getInternalPlayer().setPlaybackQuality(newQuality);
@@ -148,6 +188,7 @@ const Video = ({ videoSrc, videoTitle }) => {
   const handlePlaybackRateChange = (newPlaybackRate) => {
     setVideoState({ ...videoState, playbackRate: parseFloat(newPlaybackRate) });
   };
+
   return (
     <div className="video_container" onTouchStart={handleTouch}>
       <Container maxWidth="md" justify="center">
@@ -178,9 +219,6 @@ const Video = ({ videoSrc, videoTitle }) => {
               onProgress={progressHandler}
               onBuffer={bufferStartHandler}
               onBufferEnd={bufferEndHandler}
-            /*   onProgress={(state) => {
-                setVideoState({ ...videoState, ...state });
-              }} */
             />
           )}
 
@@ -196,9 +234,6 @@ const Video = ({ videoSrc, videoTitle }) => {
             playing={playing}
             onRewind={rewindHandler}
             onForward={handleFastFoward}
-            /* onRewind={() => videoPlayerRef.current.seekTo(currentTime - 10)}
-            onForward={() => videoPlayerRef.current.seekTo(currentTime + 10)}
-             */
             played={played}
             onSeek={seekHandler}
             onSeekMouseUp={seekMouseUpHandler}
@@ -207,26 +242,15 @@ const Video = ({ videoSrc, videoTitle }) => {
             onVolumeSeekUp={volumeSeekUpHandler}
             mute={muted}
             onMute={muteHandler}
-           //onMute={() => setVideoState({ ...videoState, muted: !muted })}
             playbackRate={playbackRate}
             duration={formatDuration}
             currentTime={formatCurrentTime}
             onMouseSeekDown={onSeekMouseDownHandler}
             handleFullScreen={handleFullScreen}
-            /* onPlaybackRateChange={(rate) => setVideoState({ ...videoState, playbackRate: parseFloat(rate) })}
-            handleFullScreen={() => {
-              if (playerContainerRef.current) {
-                if (document.fullscreenElement) {
-                  document.exitFullscreen();
-                } else {
-                  playerContainerRef.current.requestFullscreen();
-                }
-              }
-            }} */
             videoTitle={videoTitle}
             onPlaybackRateChange={handlePlaybackRateChange}
-            quality={quality}  // Pass the quality state
-            onQualityChange={changeQuality} // Pass the quality change function
+            quality={quality}
+            onQualityChange={changeQuality}
           />
         </div>
       </Container>
@@ -234,4 +258,4 @@ const Video = ({ videoSrc, videoTitle }) => {
   );
 };
 
-export default Video ;
+export default Video;
