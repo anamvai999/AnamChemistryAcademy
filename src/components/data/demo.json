@@ -1,0 +1,14 @@
+{
+    "_id": {
+        "$oid": "671090c5f9307ce7dc231cb2"
+    },
+    "title": "L-4",
+    "thumbnail": "https://i.ibb.co/grSMnrZ/Screenshot-2024-10-17-100720.png",
+    "video": "https://youtu.be/elDX_J_AlF8?si=CEdXTgtlYg5Semyk",
+    "uploadDate": "17 Oct 2024",
+    "lectureSheet": "https://drive.google.com/file/d/12cV7DIoRzj4_0CIs-MORw0JTn0jBhPdv/view?usp=drive_link",
+    "chapterSlug": "poribeshroshayon",
+    "__v": {
+        "$numberInt": "0"
+    }
+}
